@@ -16,6 +16,10 @@ describe 'fluentbit' do
         it {
           is_expected.to contain_package('fluent-bit').with_ensure(%r{present|installed})
         }
+      when 'RedHat'
+        it {
+          is_expected.to contain_package('fluent-bit').with_ensure(%r{present|installed})
+        }
       end
     end
   end

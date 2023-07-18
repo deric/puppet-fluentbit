@@ -1,1 +1,4 @@
---- {}
+---
+fluentbit::manage_package_repo: true
+fluentbit::package_ensure: present
+fluentbit::package_name: fluent-bit

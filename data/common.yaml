@@ -2,3 +2,10 @@
 fluentbit::manage_package_repo: true
 fluentbit::package_ensure: present
 fluentbit::package_name: fluent-bit
+fluentbit::manage_service: true
+fluentbit::service_enable: true
+fluentbit::service_has_status: true
+fluentbit::service_has_restart: true
+fluentbit::service_restart_command: 'systemctl reload-or-restart fluent-bit'
+fluentbit::service_ensure: 'running'
+fluentbit::service_name: 'fluent-bit'

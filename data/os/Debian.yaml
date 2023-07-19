@@ -1,1 +1,3 @@
---- {}
+---
+fluentbit::repo::debian::key_fingerprint: C3C0A28534B9293EAF51FABD9F9DDC083888C1CD
+fluentbit::repo::debian::key_location: https://packages.fluentbit.io/fluentbit.key

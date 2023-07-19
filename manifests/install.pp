@@ -8,4 +8,13 @@ class fluentbit::install {
   ensure_packages([$fluentbit::package_name], {
     ensure  => $fluentbit::package_ensure,
   })
+
+  case $facts['os']['family'] {
+    'Debian': {
+        Apt::Source['fluentbit']
+        -> Class['apt::update']
+        -> Package[$fluentbit::package_name]
+    }
+    default: {}
+  }
 }

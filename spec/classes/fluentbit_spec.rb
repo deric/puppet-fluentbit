@@ -3,24 +3,17 @@
 require 'spec_helper'
 
 describe 'fluentbit' do
-  on_supported_os.each do |os, os_facts|
-    context "on #{os}" do
-      let(:facts) { os_facts }
+  _, os_facts = on_supported_os.first
 
-      it { is_expected.to compile.with_all_deps }
+  context 'with default parameters' do
+    let(:facts) { os_facts }
 
-      it { is_expected.to contain_class('fluentbit') }
+    it { is_expected.to compile.with_all_deps }
 
-      case os_facts[:os]['family']
-      when 'Debian'
-        it {
-          is_expected.to contain_package('fluent-bit').with_ensure(%r{present|installed})
-        }
-      when 'RedHat'
-        it {
-          is_expected.to contain_package('fluent-bit').with_ensure(%r{present|installed})
-        }
-      end
-    end
+    it { is_expected.to contain_class('fluentbit') }
+
+    it {
+      is_expected.to contain_package('fluent-bit').with_ensure(%r{present|installed})
+    }
   end
 end

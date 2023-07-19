@@ -1,14 +1,16 @@
 # @summary Manage fluentbit apt repo
 #
-# @private
-class fluentbit::repo::debian {
-  assert_private()
+# @param key_location
+# @param key_fingerprint
+class fluentbit::repo::debian(
+  Stdlib::HTTPUrl $key_location,
+  String[1] $key_fingerprint,
+  ) {
 
   $flavour = dig($facts, 'os', 'distro', 'id')
   $release = dig($facts, 'os', 'distro', 'codename')
   $supported = $flavour ? {
     'Debian' => [
-      'stretch',
       'buster',
       'bullseye',
       'bookworm',
@@ -16,9 +18,10 @@ class fluentbit::repo::debian {
     'Ubuntu' => [
       'xenial',
       'bionic',
+      'focal',
+      'jammy'
     ],
     'Raspbian' => [
-      'stretch',
       'buster',
       'bullseye',
       'bookworm',
@@ -40,16 +43,12 @@ class fluentbit::repo::debian {
     release  => $release,
     repos    => 'main',
     key      => {
-      id     => $fluentbit::repo_key_fingerprint,
-      source => $fluentbit::repo_key_location,
+      id     => $key_fingerprint,
+      source => $key_location,
     },
     include  => {
       src => false,
       deb => true,
     },
   }
-
-  Apt::Source['fluentbit']
-    -> Class['::apt::update']
-    -> Package['fluentbit']
 }

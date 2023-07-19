@@ -6,17 +6,17 @@
 #
 # @private
 #   include fluentbit::config
-class fluentbit::config {
+class fluentbit::config (
+  Stdlib::Absolutepath $config_dir = $fluentbit::config_dir,
+  Stdlib::Absolutepath $plugin_dir = $fluentbit::plugin_dir,
+  Stdlib::Absolutepath $scripts_dir = $fluentbit::scripts_dir,
+) {
   assert_private()
 
   File {
     ensure  => file,
     mode    => $fluentbit::config_file_mode,
   }
-
-  $config_dir = dirname($fluentbit::config_file)
-  $plugin_dir = "${config_dir}/pipelines"
-  $scripts_dir = "${config_dir}/lua-scripts"
 
   if $fluentbit::manage_config_dir {
     file { $config_dir:

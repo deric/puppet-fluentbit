@@ -49,6 +49,9 @@
 #   Whether to manage the storage directory. `storage_path` must be defined.
 #   Default value: true
 #
+# @param config_dir
+#   Absolute path to directory where configuration files are stored.
+#
 # @param data_dir
 #   Path to data directory that will be used by plugins using DB feature.
 #
@@ -189,17 +192,10 @@ class fluentbit (
   Boolean                 $manage_data_dir,
   Boolean                 $manage_storage_dir,
 
-  Hash[String, Hash]      $input_plugins,
-  Hash[String, Hash]      $output_plugins,
-  Hash[String, Hash]      $filter_plugins,
-
-  Hash[String, Fluentbit::Parser]          $parsers,
-  Hash[String, Fluentbit::MultilineParser] $multiline_parsers = {},
-  Hash[String, Fluentbit::Stream]          $streams = {},
-  Hash[String, Hash]                       $upstreams = {},
-  Array[Stdlib::Absolutepath]              $plugins = [],
-
   Stdlib::Absolutepath $binary_file,
+  Stdlib::Absolutepath $config_dir,
+  Stdlib::Absolutepath $plugin_dir,
+  Stdlib::Absolutepath $scripts_dir,
   Stdlib::Absolutepath $data_dir,
   Stdlib::Absolutepath $config_file,
   Stdlib::Filemode $config_file_mode,
@@ -229,9 +225,17 @@ class fluentbit (
   Boolean                          $storage_metrics,
   Boolean                          $storage_delete_irrecoverable_chunks,
   Optional[String[1]]              $storage_backlog_mem_limit,
-
-  Hash $variables = {},
   Integer $coro_stack_size,
+
+  Hash[String, Fluentbit::Parser]          $parsers,
+  Hash[String, Hash]                       $input_plugins = {},
+  Hash[String, Hash]                       $output_plugins = {},
+  Hash[String, Hash]                       $filter_plugins = {},
+  Hash                                     $variables = {},
+  Hash[String, Fluentbit::MultilineParser] $multiline_parsers = {},
+  Hash[String, Fluentbit::Stream]          $streams = {},
+  Hash[String, Hash]                       $upstreams = {},
+  Array[Stdlib::Absolutepath]              $plugins = [],
 ) {
   contain fluentbit::repo
   contain fluentbit::install
@@ -242,4 +246,9 @@ class fluentbit (
   -> Class['fluentbit::install']
   -> Class['fluentbit::config']
   ~> Class['fluentbit::service']
+
+  create_resources(fluentbit::pipeline, $input_plugins, { type => 'input' })
+  create_resources(fluentbit::pipeline, $output_plugins, { type => 'output' })
+  create_resources(fluentbit::pipeline, $filter_plugins, { type => 'filter' })
+  create_resources(fluentbit::upstream, $upstreams)
 }

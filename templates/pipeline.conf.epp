@@ -1,0 +1,14 @@
+# Managed by Puppet
+[<%= $type.upcase %>]
+  Name  <%= $name %>
+<% $properties.each |$key, $value| { -%>
+<%- if $value != undef { -%>
+  <%- if $value =~ Array { -%>
+    <%- $value.each |$v| { -%>
+  <%= $key.capitalize %> <%= $v %>
+    <%- } -%>
+  <%- } else { -%>
+  <%= $key.capitalize %> <%= $value %>
+  <%- } -%>
+<%- } -%>
+<% } -%>

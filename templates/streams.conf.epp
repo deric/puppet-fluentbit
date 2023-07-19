@@ -1,4 +1,4 @@
-# Managed by puppet
+# Managed by Puppet
 <% $streams.each |$name, $stream| { -%>
 [STREAM_TASK]
     Name   <%= $name %>

@@ -14,9 +14,12 @@ fluentbit::manage_config_dir: true
 fluentbit::manage_data_dir: true
 fluentbit::manage_storage_dir: true
 
-fluentbit::binary_file: '/opt/fluent-bit/bin/fluent-bit'
-fluentbit::data_dir: '/opt/fluent-bit/db'
-fluentbit::config_file: '/etc/fluent-bit/fluent-bit.conf'
+fluentbit::binary_file: /opt/fluent-bit/bin/fluent-bit
+fluentbit::config_dir: /etc/fluent-bit
+fluentbit::plugin_dir: /etc/fluent-bit/pipelines
+fluentbit::scripts_dir: /etc/fluent-bit/lua-scripts
+fluentbit::data_dir: /opt/fluent-bit/db
+fluentbit::config_file: /etc/fluent-bit/fluent-bit.conf
 fluentbit::config_file_mode: '0644'
 fluentbit::config_folder_mode: '0750'
 fluentbit::flush: 5
@@ -40,10 +43,6 @@ fluentbit::storage_backlog_mem_limit: 5M
 fluentbit::storage_metrics: true
 fluentbit::storage_delete_irrecoverable_chunks: false
 
-fluentbit::input_plugins: {}
-fluentbit::output_plugins: {}
-fluentbit::filter_plugins: {}
-
 fluentbit::manage_plugins_file: true
 fluentbit::plugins_file: '/etc/fluent-bit/plugins.conf'
 
@@ -54,7 +53,6 @@ fluentbit::manage_parsers_file: true
 fluentbit::parsers_file: '/etc/fluent-bit/parsers.conf'
 
 fluentbit::parsers:
-
   'apache':
     format: 'regex'
     regex:  '^(?<host>[^ ]*) [^ ]* (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^\"]*?)(?: +\S*)?)?" (?<code>[^ ]*) (?<size>[^ ]*)(?: "(?<referer>[^\"]*)" "(?<agent>[^\"]*)")?$'

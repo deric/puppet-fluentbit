@@ -72,3 +72,4 @@ def ensure_module_defined(module_name)
 end
 
 # 'spec_overrides' from sync.yml will appear below this line
+require 'spec_helper_local'

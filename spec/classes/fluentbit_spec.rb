@@ -12,11 +12,10 @@ describe 'fluentbit' do
 
     it { is_expected.to contain_class('fluentbit') }
     it { is_expected.to contain_class('fluentbit::repo') }
-
+    it { is_expected.to contain_class('fluentbit::install') }
+    it { is_expected.to contain_class('fluentbit::config') }
+    it { is_expected.to contain_class('fluentbit::service') }
     it { is_expected.to contain_package('fluent-bit').with_ensure(%r{present|installed}) }
-
-    it {
-      is_expected.to contain_service('fluentbit').with_ensure('running')
-    }
+    it { is_expected.to contain_service('fluentbit').with_ensure('running') }
   end
 end

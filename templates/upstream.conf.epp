@@ -1,0 +1,12 @@
+# Managed by Puppet
+[UPSTREAM]
+  name  <%= $name %>
+
+<% $nodes.each |$node_name, $node| { -%>
+[NODE]
+  name  <%= $node_name %>
+  host  <%= $node['host'] %>
+  port  <%= $node['port'] %>
+
+<% } -%>
+# <%= $nodes.length %> nodes

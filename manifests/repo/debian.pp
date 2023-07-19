@@ -2,11 +2,10 @@
 #
 # @param key_location
 # @param key_fingerprint
-class fluentbit::repo::debian(
+class fluentbit::repo::debian (
   Stdlib::HTTPUrl $key_location,
   String[1] $key_fingerprint,
-  ) {
-
+) {
   $flavour = dig($facts, 'os', 'distro', 'id')
   $release = dig($facts, 'os', 'distro', 'codename')
   $supported = $flavour ? {
@@ -19,7 +18,7 @@ class fluentbit::repo::debian(
       'xenial',
       'bionic',
       'focal',
-      'jammy'
+      'jammy',
     ],
     'Raspbian' => [
       'buster',
@@ -33,7 +32,7 @@ class fluentbit::repo::debian(
     fail("OS ${flavour}/${release} is not supported")
   }
 
-  contain '::apt'
+  contain 'apt'
 
   $_flavour = downcase($flavour)
 

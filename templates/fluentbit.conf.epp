@@ -1,0 +1,40 @@
+# Managed by Puppet
+<% $variables.each |$key, $value| { -%>
+@SET <%= $key %>=<%= $value %>
+<% } -%>
+
+[SERVICE]
+    Flush                     <%= $service['flush'] %>
+    Daemon                    <%= $service['daemon'] %>
+    Grace                     <%= $service['grace'] %>
+    dns.mode                  <%= $service['dns.mode'] %>
+    Log_Level                 <%= $service['log_level'] %>
+    Parsers_File              <%= $service['parsers_file'] %>
+    Plugins_File              <%= $service['plugins_file'] %>
+    Streams_file              <%= $service['streams_file'] %>
+    HTTP_Server               <%= $service['http_server'] %>
+    HTTP_Listen               <%= $service['http_listen'] %>
+    HTTP_Port                 <%= $service['http_port'] %>
+    Coro_Stack_Size           <%= $service['coro_stack_size'] %>
+    scheduler.cap             <%= $service['scheduler.cap'] %>
+    scheduler.base            <%= $service['scheduler.base'] %>
+    json.convert_nan_to_null  <%= $service['json.convert_nan_to_null'] %>
+<% if $service['storage.checksum'] { %>
+    storage.checksum          <%= $service['storage.checksum'] %>
+<% } -%>
+<% if $service['storage.path'] { %>
+    storage.path              <%= $service['storage.path'] %>
+<% } -%>
+<% if $service['storage.sync'] { %>
+    storage.sync              <%= $service['storage.sync'] %>
+<% } -%>
+<% if $service['storage.backlog_mem_limit'] { %>
+    storage.backlog.mem_limit <%= $service['storage.backlog_mem_limit'] %>
+<% } -%>
+    storage.max_chunks_up     <%= $service['storage.max_chunks_up'] %>
+    storage.metrics           <%= $service['storage.metrics'] %>
+    storage.delete_irrecoverable_chunks <%= $service['storage.delete_irrecoverable_chunks'] %>
+
+<%- if $manage_config_dir { %>
+@INCLUDE pipelines/*.conf
+<%- } %>

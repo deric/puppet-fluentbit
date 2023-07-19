@@ -1,0 +1,7 @@
+# Managed by puppet
+[PLUGINS]
+<% $plugins.each |$plugin| { -%>
+    Path <%= $plugin %>
+<% } -%>
+
+# <%= $plugins.length %> plugins

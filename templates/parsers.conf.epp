@@ -1,0 +1,53 @@
+# Managed by puppet
+<% $parsers.each |$name, $parser| { -%>
+[PARSER]
+    Name          <%= $name %>
+<% if $parser['format'] { -%>
+    Format        <%= $parser['format'] %>
+<% } -%>
+<% if $parser['regex'] { -%>
+    Regex         <%= $parser['regex'] %>
+<% } -%>
+<% if $parser['time_key'] { -%>
+    Time_key      <%= $parser['time_key'] %>
+<% } -%>
+<% if $parser['time_format'] { -%>
+    Time_format   <%= $parser['time_format'] %>
+<% } -%>
+<% if $parser['time_offset'] { -%>
+    Time_offset   <%= $parser['time_offset'] %>
+<% } -%>
+<% if $parser['time_keep'] == true { -%>
+    Time_keep     On
+<% } elsif $parser['time_keep'] == false { -%>
+    Time_keep     Off
+<% } -%>
+<% if $parser['types'] { -%>
+    Types         <%= $parser['types'].map |$type| { [$type['field'], $type['type']].join(':') }.join(' ') %>
+<% } -%>
+<% if $parser['decode_field'] { -%>
+<% $parser['decode_field'].each |$decode| { -%>
+    Decode_field  <%= $decode['decoder'] %> <%= $decode['field'] %>
+<% } -%>
+<% } -%>
+
+<% } -%>
+<% $multiline_parsers.each |$name, $parser| { -%>
+[MULTILINE_PARSER]
+    Name          <%= $name %>
+    Type          <%= $parser['type'] %>
+<% if $parser['parser'] { -%>
+    Parser        <%= $parser['time_format'] %>
+<% } -%>
+<% if $parser['key_content'] { -%>
+    Key_content   <%= $parser['key_content'] %>
+<% } -%>
+<% if $parser['flush_timeout'] { -%>
+    Flush_timeout <%= $parser['flush_timeout'] %>
+<% } -%>
+<% $parser['rules'].each |$rule| { -%>
+    Rule  "<%= $rule['state'] %>" "<%= $rule['regex'] %>" "<%= $rule['next_state'] %>"
+<% } -%>
+
+<% } -%>
+# <%= $parsers.length + $multiline_parsers.length %> parsers

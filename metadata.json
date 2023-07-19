@@ -4,7 +4,7 @@
   "author": "Tomas Barton",
   "summary": "Manage fluentbit installation",
   "license": "Apache-2.0",
-  "source": "",
+  "source": "https://github.com/deric/puppet-fluentbit",
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
@@ -13,6 +13,14 @@
     {
       "name": "puppetlabs/apt",
       "version_requirement": ">= 4.5.1 < 10.0.0"
+    },
+    {
+      "name": "puppetlabs/concat",
+      "version_requirement": ">=1.2.1 <10.0.0"
+    },
+    {
+      "name": "puppet/systemd",
+      "version_requirement": ">= 2.0.0 < 6.0.0"
     }
   ],
   "operatingsystem_support": [

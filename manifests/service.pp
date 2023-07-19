@@ -13,5 +13,16 @@ class fluentbit::service {
       restart    => $fluentbit::service_restart_command,
       name       => $fluentbit::service_name,
     }
+
+    systemd::unit_file { "${fluentbit::service_name}.service":
+      ensure  => present,
+      notify  => Service['fluentbit'],
+      content => epp('fluentbit/fluentbit.service.epp',
+        {
+          'binary_file' => $fluentbit::binary_file,
+          'config_file' => $fluentbit::config_file,
+        }
+      ),
+    }
   }
 }

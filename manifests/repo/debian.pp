@@ -1,8 +1,10 @@
 # @summary Manage fluentbit apt repo
 #
-# @param key_location
 # @param key_fingerprint
-# @param flavor
+#   GPG key identifier of the repository
+# @param key_location
+#   GPG key URI
+# @param flavour
 #   e.g. Debian/Ubuntu
 # @param release
 #   distribution code name

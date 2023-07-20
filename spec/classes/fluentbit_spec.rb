@@ -69,6 +69,5 @@ describe 'fluentbit' do
         recurse: true,
       )
     }
-
   end
 end

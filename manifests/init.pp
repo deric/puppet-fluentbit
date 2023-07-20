@@ -3,9 +3,9 @@
 # @see https://docs.fluentbit.io/manual/
 #
 # @param manage_package_repo Installs the package repositories
-# @param input_plugins Hash of the INPUT plugins to be configured
-# @param output_plugins Hash of the OUTPUT plugins to be configured
-# @param filter_plugins Hash of the filter to be configured
+# @param inputs Hash of the INPUT plugins to be configured
+# @param outputs Hash of the OUTPUT plugins to be configured
+# @param filters Hash of the filter to be configured
 #
 # @param package_ensure
 #   Whether to install the Fluentbit package, and what version to install.
@@ -237,13 +237,13 @@ class fluentbit (
   String $scripts_dir,
 
   Fluentbit::Parser           $parsers,
-  Hash[String, Hash]          $input_plugins = {},
-  Hash[String, Hash]          $output_plugins = {},
-  Hash[String, Hash]          $filter_plugins = {},
+  Fluentbit::PipelinePlugin   $inputs = {},
+  Fluentbit::PipelinePlugin   $outputs = {},
+  Fluentbit::PipelinePlugin   $filters = {},
+  Hash[String, Hash]          $upstreams = {},
   Hash                        $variables = {},
   Fluentbit::MultilineParser  $multiline_parsers = {},
   Fluentbit::Stream           $streams = {},
-  Hash[String, Hash]          $upstreams = {},
   Array[Stdlib::Absolutepath] $plugins = [],
 ) {
   $plugins_path = "${config_dir}/${plugins_dir}"
@@ -259,8 +259,8 @@ class fluentbit (
   -> Class['fluentbit::config']
   ~> Class['fluentbit::service']
 
-  create_resources(fluentbit::pipeline, $input_plugins, { pipeline_type => 'input' })
-  create_resources(fluentbit::pipeline, $output_plugins, { pipeline_type => 'output' })
-  create_resources(fluentbit::pipeline, $filter_plugins, { pipeline_type => 'filter' })
+  create_resources(fluentbit::pipeline, $inputs, { pipeline => 'input' })
+  create_resources(fluentbit::pipeline, $outputs, { pipeline => 'output' })
+  create_resources(fluentbit::pipeline, $filters, { pipeline => 'filter' })
   create_resources(fluentbit::upstream, $upstreams)
 }

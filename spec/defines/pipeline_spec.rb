@@ -11,11 +11,17 @@ describe 'fluentbit::pipeline' do
     let(:title) { 'input' }
     let(:params) do
       {
-        pipeline_type: 'input',
-        plugin_name: 'dummy',
+        pipeline: 'input',
+        plugin: 'tail',
+        properties: {
+          path: '/var/log/syslog',
+        }
       }
     end
 
     it { is_expected.to compile }
+
+    it { is_expected.to contain_concat__fragment('pipeline-input').with_content(%r{Name\s+tail\n}) }
+    it { is_expected.to contain_concat__fragment('pipeline-input').with_content(%r{Path\s+/var/log/syslog\n}) }
   end
 end

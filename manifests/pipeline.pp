@@ -6,78 +6,72 @@
 #
 # @example
 #   fluentbit::pipeline { 'input-dummy':
-#     type        => 'input',
-#     plugin_name => 'dummy',
+#     pipeline => 'input',
+#     plugin   => 'dummy',
 #   }
 # @example
 #   fluentbit {
 #     input_plugins => {
-#       'input-dummy' => { 'plugin_name' => 'dummy' },
+#       'input-dummy' => { 'plugin' => 'dummy' },
 #     },
 #   }
 # @see https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/yaml/configuration-file#config_pipeline
 #
-# @param pipeline_type Defines the pipeline type to be configured
-# @param plugin_name fluent-bit plugin name to be used
+# @param pipeline Defines the pipeline type to be configured
+# @param plugin fluent-bit plugin name to be used
 # @param order Order to be applied to concat::fragment
 # @param properties Hash of rest of properties needed to configure the pipeline-plugin
-# @param data_dir
-# @param config_dir
-# @param scripts_path
-# @param plugins_path
+#
 define fluentbit::pipeline (
-  Fluentbit::PipelineType $pipeline_type,
-  String[1]               $plugin_name,
-  String[1]               $order       = '10',
+  Fluentbit::PipelineType $pipeline,
+  String[1]               $plugin,
+  Integer                 $order       = 10,
   Hash[String, Any]       $properties  = {},
-  Stdlib::Absolutepath    $data_dir    = $fluentbit::data_dir,
-  Stdlib::Absolutepath    $config_dir  = $fluentbit::config_dir,
-  Stdlib::Absolutepath    $scripts_path = $fluentbit::scripts_path,
-  Stdlib::Absolutepath    $plugins_path = $fluentbit::plugins_path,
 ) {
   $db_compatible_plugins = ['tail', 'systemd']
 
-  if $pipeline_type == 'input' and $plugin_name in $db_compatible_plugins {
+  if $pipeline == 'input' and $plugin in $db_compatible_plugins {
     $db_settings = {
-      'db' => "${data_dir}/${title}",
+      'db' => "${fluentbit::data_dir}/${title}",
     }
   } else {
     $db_settings = {}
   }
 
-  if $pipeline_type == 'output' and $plugin_name == 'forward' {
+  if $pipeline == 'output' and $plugin == 'forward' {
     $upstream_settings = $properties['upstream'] ? {
       undef      => {},
       default    => {
-        upstream => "${config_dir}/upstream-${properties['upstream']}.conf",
+        upstream => "${fluentbit::config_dir}/upstream-${properties['upstream']}.conf",
       },
     }
   } else {
     $upstream_settings = {}
   }
 
-  if $pipeline_type == 'filter' and $plugin_name == 'lua' and $properties['code'] {
+  if $pipeline == 'filter' and $plugin == 'lua' and $properties['code'] {
     # Catch 'code' property for lua scripts and write it to disk
-    file { "${scripts_path}/${title}.lua":
+    file { "${fluentbit::scripts_path}/${title}.lua":
       ensure  => file,
       mode    => $fluentbit::config_file_mode,
       content => $properties['code'],
       notify  => Service[$fluentbit::service_name],
     }
     $script_settings = {
-      'script' => "${scripts_path}/${title}.lua",
+      'script' => "${fluentbit::scripts_path}/${title}.lua",
       'code'   => undef,
     }
   } else {
     $script_settings = {}
   }
 
-  concat::fragment { "fragment-${title}":
-    target  => "${plugins_path}/${pipeline_type}s.conf",
+  concat::fragment { "pipeline-${title}":
+    target  => "${fluentbit::plugins_path}/${pipeline}s.conf",
     content => epp('fluentbit/pipeline.conf.epp',
       {
-        name          => $plugin_name,
-        pipeline_type => $pipeline_type,
+        name          => $plugin,
+        pipeline_type => $pipeline,
+        order         => $order,
         properties    => merge(
           $db_settings,
           {

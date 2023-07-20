@@ -101,4 +101,25 @@ describe 'fluentbit' do
         .with_content(%r{Name\s+json\n\s+Format\s+json\n\s+Time_key\s+time})
     }
   end
+
+  context 'configure inputs' do
+    let(:params) do
+      {
+        inputs: {
+          'tail-syslog': {
+            'pipeline': 'input',
+            'plugin': 'tail',
+            'properties': {
+              'Path': '/var/log/syslog',
+            }
+          }
+        },
+      }
+    end
+
+    it {
+      is_expected.to contain_file('/etc/fluent-bit/parsers.conf')
+        .with_content(%r{Name\s+json\n\s+Format\s+json\n\s+Time_key\s+time})
+    }
+  end
 end

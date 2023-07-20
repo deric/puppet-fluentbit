@@ -189,6 +189,7 @@ class fluentbit (
   Boolean                 $service_has_status,
   Optional[String[1]]     $service_restart_command,
   Boolean                 $service_has_restart,
+  Boolean                 $service_override_unit_file,
   Stdlib::Ensure::Service $service_ensure,
   String[1]               $service_name,
 

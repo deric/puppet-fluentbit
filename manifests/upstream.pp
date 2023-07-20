@@ -26,6 +26,6 @@ define fluentbit::upstream (
         'nodes' => $nodes,
       },
     ),
-    notify  => Service['fluentbit'],
+    notify  => Service[$fluentbit::service_name],
   }
 }

@@ -15,7 +15,7 @@ describe 'fluentbit' do
     it { is_expected.to contain_class('fluentbit::config') }
     it { is_expected.to contain_class('fluentbit::service') }
     it { is_expected.to contain_package('fluent-bit').with_ensure(%r{present|installed}) }
-    it { is_expected.to contain_service('fluentbit').with_ensure('running') }
+    it { is_expected.to contain_service('fluent-bit').with_ensure('running') }
 
     it { is_expected.to contain_concat('/etc/fluent-bit/pipelines/inputs.conf') }
     it { is_expected.to contain_concat('/etc/fluent-bit/pipelines/outputs.conf') }
@@ -66,6 +66,20 @@ describe 'fluentbit' do
         purge: true,
         recurse: true,
       )
+    }
+  end
+
+  context 'override service file' do
+    let(:params) do
+      {
+        service_override_unit_file: true,
+      }
+    end
+
+    it {
+      is_expected.to contain_file('/etc/systemd/system/fluent-bit.service').with(
+        ensure: 'file'
+      ).with_content(%r{ExecStart=/opt/fluent-bit/bin/fluent-bit -c /etc/fluent-bit/fluent-bit.conf --enable-hot-reload})
     }
   end
 end

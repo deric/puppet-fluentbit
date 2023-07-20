@@ -22,5 +22,7 @@ spec/spec_helper.rb:
   coverage_report: true
 Gemfile:
   optional:
+    ':system_tests':
+      - gem: 'voxpupuli-acceptance'
     ':release':
       - gem: 'puppet-blacksmith'

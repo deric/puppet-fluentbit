@@ -1,0 +1,12 @@
+HOSTS:
+  debian-11-x64:
+    roles:
+      - master
+    platform: debian-11-amd64
+    hypervisor: docker
+    debug: false
+    image: amd64/debian:11
+CONFIG:
+  masterless: true
+  log_level: verbose
+  type: foss

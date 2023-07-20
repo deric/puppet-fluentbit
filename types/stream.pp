@@ -1,3 +1,4 @@
-type Fluentbit::Stream = Struct[{
-  exec => String[1],
-}]
+type Fluentbit::Stream = Hash[String, Struct[{
+    exec => String[1],
+  }]
+]

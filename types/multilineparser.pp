@@ -1,4 +1,4 @@
-type Fluentbit::MultilineParser = Struct[{
+type Fluentbit::MultilineParser = Hash[String, Struct[{
   type                    => Enum['regex'],
   rules                   => Array[Struct[{
                             state      => String[1],
@@ -8,4 +8,4 @@ type Fluentbit::MultilineParser = Struct[{
   Optional[parser]        => String[1],
   Optional[key_content]   => String[1],
   Optional[flush_timeout] => Integer,
-}]
+}]]

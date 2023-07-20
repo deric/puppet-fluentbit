@@ -82,4 +82,23 @@ describe 'fluentbit' do
       ).with_content(%r{ExecStart=/opt/fluent-bit/bin/fluent-bit -c /etc/fluent-bit/fluent-bit.conf --enable-hot-reload})
     }
   end
+
+  context 'configure json parser' do
+    let(:params) do
+      {
+        parsers: {
+          'json': {
+            'format': 'json',
+            'time_key': 'time',
+            'time_format': '%d/%b/%Y:%H:%M:%S %z',
+          }
+        },
+      }
+    end
+
+    it {
+      is_expected.to contain_file('/etc/fluent-bit/parsers.conf')
+        .with_content(%r{Name\s+json\n\s+Format\s+json\n\s+Time_key\s+time})
+    }
+  end
 end

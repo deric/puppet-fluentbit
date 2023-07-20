@@ -1,15 +1,16 @@
 # @summary configures the main fluentbit main config
 #
-# Includes all [input] and [output] configs. (@include)
-# Sets global variables (@set)
-# Configures global [service] section
+# @param config_dir
+#   Absolute path to main configuration directory
+# @param plugins_path
+# @param scripts_path
 #
 # @private
 #   include fluentbit::config
 class fluentbit::config (
   Stdlib::Absolutepath $config_dir = $fluentbit::config_dir,
-  Stdlib::Absolutepath $plugin_dir = $fluentbit::plugin_dir,
-  Stdlib::Absolutepath $scripts_dir = $fluentbit::scripts_dir,
+  Stdlib::Absolutepath $plugins_path = $fluentbit::plugins_path,
+  Stdlib::Absolutepath $scripts_path = $fluentbit::scripts_path,
 ) {
   assert_private()
 
@@ -25,13 +26,13 @@ class fluentbit::config (
       recurse => true,
       mode    => $fluentbit::config_folder_mode,
     }
-    -> file { $plugin_dir:
+    -> file { $plugins_path:
       ensure  => directory,
       purge   => true,
       recurse => true,
       mode    => $fluentbit::config_folder_mode,
     }
-    file { $scripts_dir:
+    file { $scripts_path:
       ensure  => directory,
       purge   => true,
       recurse => true,
@@ -48,24 +49,24 @@ class fluentbit::config (
 
     concat {
       [
-        "${plugin_dir}/inputs.conf",
-        "${plugin_dir}/outputs.conf",
-        "${plugin_dir}/filters.conf",
+        "${plugins_path}/inputs.conf",
+        "${plugins_path}/outputs.conf",
+        "${plugins_path}/filters.conf",
       ]:
     }
 
     concat::fragment { 'inputs-header':
-      target  => "${plugin_dir}/inputs.conf",
+      target  => "${plugins_path}/inputs.conf",
       content => "# Managed by Puppet\n",
       order   => '01',
     }
     concat::fragment { 'outputs-header':
-      target  => "${plugin_dir}/outputs.conf",
+      target  => "${plugins_path}/outputs.conf",
       content => "# Managed by Puppet\n",
       order   => '01',
     }
     concat::fragment { 'filters-header':
-      target  => "${plugin_dir}/filters.conf",
+      target  => "${plugins_path}/filters.conf",
       content => "# Managed by Puppet\n",
       order   => '01',
     }

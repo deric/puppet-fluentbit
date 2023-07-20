@@ -11,6 +11,7 @@
 #
 # @param upstream_name Name to be assigned to upstream, defaults to resource namevar
 # @param nodes Hash of nodes assigned to this upstream
+# @param config_dir Absolute path to config directory
 define fluentbit::upstream (
   Hash[String, Fluentbit::UpstreamNode] $nodes,
   String[1]            $upstream_name = $name,

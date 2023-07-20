@@ -52,6 +52,10 @@
 # @param config_dir
 #   Absolute path to directory where configuration files are stored.
 #
+# @param plugins_dir
+#   Directory name for plugins, relative to @config_dir
+# @param scripts_dir
+#   Directory name for scripts, relative to @config_dir
 # @param data_dir
 #   Path to data directory that will be used by plugins using DB feature.
 #
@@ -194,8 +198,6 @@ class fluentbit (
 
   Stdlib::Absolutepath $binary_file,
   Stdlib::Absolutepath $config_dir,
-  Stdlib::Absolutepath $plugin_dir,
-  Stdlib::Absolutepath $scripts_dir,
   Stdlib::Absolutepath $data_dir,
   Stdlib::Absolutepath $config_file,
   Stdlib::Filemode $config_file_mode,
@@ -226,6 +228,8 @@ class fluentbit (
   Boolean                          $storage_delete_irrecoverable_chunks,
   Optional[String[1]]              $storage_backlog_mem_limit,
   Integer $coro_stack_size,
+  String $plugins_dir,
+  String $scripts_dir,
 
   Hash[String, Fluentbit::Parser]          $parsers,
   Hash[String, Hash]                       $input_plugins = {},
@@ -237,6 +241,9 @@ class fluentbit (
   Hash[String, Hash]                       $upstreams = {},
   Array[Stdlib::Absolutepath]              $plugins = [],
 ) {
+  $plugins_path = "${config_dir}/${plugins_dir}"
+  $scripts_path = "${config_dir}/${scripts_dir}"
+
   contain fluentbit::repo
   contain fluentbit::install
   contain fluentbit::config

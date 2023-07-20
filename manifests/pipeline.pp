@@ -21,6 +21,10 @@
 # @param plugin_name fluent-bit plugin name to be used
 # @param order Order to be applied to concat::fragment
 # @param properties Hash of rest of properties needed to configure the pipeline-plugin
+# @param data_dir
+# @param config_dir
+# @param scripts_path
+# @param plugins_path
 define fluentbit::pipeline (
   Enum['input','filter','output'] $type,
   String[1]                       $plugin_name,
@@ -28,8 +32,8 @@ define fluentbit::pipeline (
   Hash[String, Any]               $properties  = {},
   Stdlib::Absolutepath            $data_dir    = $fluentbit::data_dir,
   Stdlib::Absolutepath            $config_dir  = $fluentbit::config_dir,
-  Stdlib::Absolutepath            $scripts_dir = $fluentbit::scripts_dir,
-  Stdlib::Absolutepath            $plugin_dir  = $fluentbit::plugin_dir,
+  Stdlib::Absolutepath            $scripts_path = $fluentbit::scripts_path,
+  Stdlib::Absolutepath            $plugins_path = $fluentbit::plugins_path,
 ) {
   $db_compatible_plugins = ['tail', 'systemd']
 
@@ -54,14 +58,14 @@ define fluentbit::pipeline (
 
   if $type == 'filter' and $plugin_name == 'lua' and $properties['code'] {
     # Catch 'code' property for lua scripts and write it to disk
-    file { "${scripts_dir}/${title}.lua":
+    file { "${scripts_path}/${title}.lua":
       ensure  => file,
       mode    => $fluentbit::config_file_mode,
       content => $properties['code'],
       notify  => Service[$fluentbit::service_name],
     }
     $script_settings = {
-      'script' => "${scripts_dir}/${title}.lua",
+      'script' => "${scripts_path}/${title}.lua",
       'code'   => undef,
     }
   } else {
@@ -69,7 +73,7 @@ define fluentbit::pipeline (
   }
 
   concat::fragment { "fragment-${title}":
-    target  => "${plugin_dir}/${type}s.conf",
+    target  => "${plugins_path}/${type}s.conf",
     content => epp('fluentbit/pipeline.conf.epp',
       {
         name       => $plugin_name,

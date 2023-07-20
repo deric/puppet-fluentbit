@@ -39,8 +39,6 @@ describe 'fluentbit' do
       {
         config_dir: '/etc/fluentbit',
         config_file: '/etc/fluentbit/fluent-bit.conf',
-        plugin_dir: '/etc/fluentbit/pipelines',
-        scripts_dir: '/etc/fluentbit/lua-scripts'
       }
     end
 

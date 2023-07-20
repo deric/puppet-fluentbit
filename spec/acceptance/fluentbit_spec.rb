@@ -15,19 +15,17 @@ describe 'fluentbit' do
       apply_manifest(pp, catch_changes: true)
     end
 
-    describe file('/etc/fluentbit-bit') do
+    describe file('/etc/fluent-bit') do
       it { is_expected.to be_directory }
       it { is_expected.to be_readable.by('owner') }
       it { is_expected.to be_readable.by('group') }
-      it { is_expected.to be_readable.by('others') }
     end
 
-    # we need a static raft config for this
-    describe package('fluentbit-bit') do
+    describe package('fluent-bit') do
       it { is_expected.to be_installed }
     end
 
-    describe service('fluentbitbit') do
+    describe service('fluent-bit') do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }
     end

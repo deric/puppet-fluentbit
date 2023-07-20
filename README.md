@@ -16,7 +16,7 @@ include fluentbit
 
 [Fluent Bit supports wide range of inputs](https://docs.fluentbit.io/manual/pipeline/inputs)
 
-![fluentbit pipeline]("doc/pipeline.png")
+![fluentbit pipeline](img/pipeline.png)
 
 ```yaml
 fluentbit::inputs:

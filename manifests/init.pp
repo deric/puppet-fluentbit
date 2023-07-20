@@ -35,6 +35,10 @@
 #
 # @param service_restart_command
 #   Optional command for restarting service
+#
+# @param service_override_unit_file
+#   Override service definition provided by package with a drop-in unit file.
+#
 # @param manage_config_dir
 #   Whether to manage the configuration directory.
 #   When enabled, will remove all unmanaged files from the directory the

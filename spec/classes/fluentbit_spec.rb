@@ -78,7 +78,7 @@ describe 'fluentbit' do
 
     it {
       is_expected.to contain_file('/etc/systemd/system/fluent-bit.service').with(
-        ensure: 'file'
+        ensure: 'file',
       ).with_content(%r{ExecStart=/opt/fluent-bit/bin/fluent-bit -c /etc/fluent-bit/fluent-bit.conf --enable-hot-reload})
     }
   end

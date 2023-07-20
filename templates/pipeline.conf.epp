@@ -1,5 +1,5 @@
 # Managed by Puppet
-[<%= $type.upcase %>]
+[<%= $pipeline_type.upcase %>]
   Name  <%= $name %>
 <% $properties.each |$key, $value| { -%>
 <%- if $value != undef { -%>

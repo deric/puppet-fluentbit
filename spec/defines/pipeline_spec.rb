@@ -11,9 +11,8 @@ describe 'fluentbit::pipeline' do
     let(:title) { 'input' }
     let(:params) do
       {
-        type: 'input',
+        pipeline_type: 'input',
         plugin_name: 'dummy',
-
       }
     end
 

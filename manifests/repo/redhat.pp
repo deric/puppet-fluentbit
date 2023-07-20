@@ -1,8 +1,14 @@
-# @summary A short summary of the purpose of this class
+# @summary Manage yum repo
 #
-# A description of what this class does
-#
-# @example
-#   include fluentbit::repo::redhat
 class fluentbit::repo::redhat {
+  $releasever = $facts.dig('os', 'release', 'major')
+
+  yumrepo { 'fluent-bit':
+    ensure   => 'present',
+    descr    => 'Fluent Bit',
+    baseurl  => "https://packages.fluentbit.io/centos/${releasever}/",
+    gpgkey   => 'https://packages.fluentbit.io/fluentbit.key',
+    enabled  => '1',
+    gpgcheck => '1',
+  }
 }

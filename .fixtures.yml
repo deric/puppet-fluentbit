@@ -7,3 +7,4 @@ fixtures:
     concat: "puppetlabs/concat"
     stdlib: "puppetlabs/stdlib"
     systemd: "puppet/systemd"
+    yumrepo_core: "puppetlabs/yumrepo_core"

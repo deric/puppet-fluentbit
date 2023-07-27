@@ -37,3 +37,10 @@ fluentbit::outputs:
       host: 0.0.0.0
       port: 2021
 ```
+
+
+### Acceptance tests
+
+```
+BEAKER_destroy=no BEAKER_setfile=debian11-64 bundle exec rake beaker
+```

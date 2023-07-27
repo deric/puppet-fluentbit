@@ -23,7 +23,8 @@ spec/spec_helper.rb:
 Gemfile:
   optional:
     ':system_tests':
-      - gem: minitest
+      - gem: 'minitest'
+        version: '< 5.19.0'
       - gem: 'voxpupuli-acceptance'
     ':release':
       - gem: 'puppet-blacksmith'

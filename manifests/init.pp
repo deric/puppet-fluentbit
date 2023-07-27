@@ -259,8 +259,17 @@ class fluentbit (
   -> Class['fluentbit::config']
   ~> Class['fluentbit::service']
 
-  create_resources(fluentbit::pipeline, $inputs, { pipeline => 'input' })
-  create_resources(fluentbit::pipeline, $outputs, { pipeline => 'output' })
-  create_resources(fluentbit::pipeline, $filters, { pipeline => 'filter' })
+  $inputs.each |$name, $conf| {
+    create_resources(fluentbit::pipeline, { $name => merge({ 'pipeline' => 'input' }, $conf) })
+  }
+
+  $outputs.each |$name, $conf| {
+    create_resources(fluentbit::pipeline, { $name => merge({ 'pipeline' => 'output' }, $conf) })
+  }
+
+  $filters.each |$name, $conf| {
+    create_resources(fluentbit::pipeline, { $name => merge({ 'pipeline' => 'filter' }, $conf) })
+  }
+
   create_resources(fluentbit::upstream, $upstreams)
 }

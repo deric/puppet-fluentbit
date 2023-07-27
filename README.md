@@ -18,11 +18,22 @@ include fluentbit
 
 ![fluentbit pipeline](img/pipeline.png)
 
+Define some inputs:
 ```yaml
 fluentbit::inputs:
   'tail-syslog':
-    pipeline: input
     plugin: tail
     properties:
       Path: /var/syslog
+```
+
+[outputs](https://docs.fluentbit.io/manual/pipeline/outputs):
+```yaml
+fluentbit::outputs:
+  'prometheus':
+    plugin: prometheus_exporter
+    properties:
+      match: nginx.metrics.*
+      host: 0.0.0.0
+      port: 2021
 ```

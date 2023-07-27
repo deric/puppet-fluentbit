@@ -106,8 +106,7 @@ describe 'fluentbit' do
     let(:params) do
       {
         inputs: {
-          'tail-syslog': {
-            'pipeline': 'input',
+          'syslog': {
             'plugin': 'tail',
             'properties': {
               'Path': '/var/log/syslog',
@@ -118,8 +117,48 @@ describe 'fluentbit' do
     end
 
     it {
-      is_expected.to contain_file('/etc/fluent-bit/parsers.conf')
-        .with_content(%r{Name\s+json\n\s+Format\s+json\n\s+Time_key\s+time})
+      is_expected.to contain_concat__fragment('pipeline-syslog')
+        .with_content(%r{Name\s+tail\n})
+        .with_content(%r{Path\s+/var/log/syslog\n})
+    }
+
+    it {
+      is_expected.to contain_fluentbit__pipeline('syslog')
+        .with({
+          'plugin': 'tail',
+          'pipeline': 'input',
+        })
+    }
+  end
+
+  context 'configure outputs' do
+    let(:params) do
+      {
+        outputs: {
+          'prometheus': {
+            'plugin': 'prometheus_exporter',
+            'properties': {
+              'match': 'nginx.metrics.*',
+              'host': '0.0.0.0',
+              'port': '2021',
+            }
+          }
+        },
+      }
+    end
+
+    it {
+      is_expected.to contain_concat__fragment('pipeline-prometheus')
+        .with_content(%r{Match\s+nginx.metrics.*\n})
+        .with_content(%r{Host\s+0.0.0.0\n})
+    }
+
+    it {
+      is_expected.to contain_fluentbit__pipeline('prometheus')
+        .with({
+          'plugin': 'prometheus_exporter',
+          'pipeline': 'output',
+        })
     }
   end
 end

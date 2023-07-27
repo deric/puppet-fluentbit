@@ -125,9 +125,9 @@ describe 'fluentbit' do
     it {
       is_expected.to contain_fluentbit__pipeline('syslog')
         .with({
-          'plugin': 'tail',
+                'plugin': 'tail',
           'pipeline': 'input',
-        })
+              })
     }
   end
 
@@ -156,9 +156,9 @@ describe 'fluentbit' do
     it {
       is_expected.to contain_fluentbit__pipeline('prometheus')
         .with({
-          'plugin': 'prometheus_exporter',
+                'plugin': 'prometheus_exporter',
           'pipeline': 'output',
-        })
+              })
     }
   end
 end

@@ -1,4 +1,5 @@
-# puppet-fluentbit [![Test](https://github.com/deric/puppet-fluentbit/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/deric/puppet-fluentbit/actions/workflows/test.yml)
+# puppet-fluentbit [![Puppet
+Forge](http://img.shields.io/puppetforge/v/deric/fluentbit.svg)](https://forge.puppet.com/modules/deric/fluentbit) [![Test](https://github.com/deric/puppet-fluentbit/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/deric/puppet-fluentbit/actions/workflows/test.yml)
 
 A Puppet module to manage [Fluent Bit](https://fluentbit.io/) installation.
 

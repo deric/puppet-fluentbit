@@ -1,4 +1,3 @@
-# Managed by Puppet
 [<%= $pipeline_type.upcase %>]
   Name  <%= $name %>
 <% $properties.each |$key, $value| { -%>

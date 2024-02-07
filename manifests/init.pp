@@ -111,17 +111,17 @@
 #   located in the configured storage path directory will be deleted when Fluent-Bit starts.
 #   Default value: false
 #
-# @param check_health
+# @param health_check
 #   Enable or disable health_check
 #   Default Off
 # @param hc_errors_count
-#   Only in use if check_health is enabled. The error count after which the healcheck returns an error.
+#   Only in use if health_check is enabled. The error count after which the healcheck returns an error.
 #   Default 5
 # @param hc_retry_failure_count
-#   Only in use if check_health is enabled. Retry count till a check returns an error
+#   Only in use if health_check is enabled. Retry count till a check returns an error
 #   Default 5
 # @param hc_period
-#   Only in use if check_health is enabled. Time period by second to count the error and retry failure data point
+#   Only in use if health_check is enabled. Time period by second to count the error and retry failure data point
 #   Default 60
 # @param manage_plugins_file
 #   Whether to manage the enabled external plugins

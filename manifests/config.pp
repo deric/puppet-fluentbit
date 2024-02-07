@@ -161,7 +161,7 @@ class fluentbit::config (
           'scheduler.base'           => $scheduler_base,
           'json.convert_nan_to_null' => $json_convert_nan_to_null,
         } + $storage_config
-          + $health_config,
+        + $health_config,
       },
     ),
   }

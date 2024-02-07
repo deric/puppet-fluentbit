@@ -34,6 +34,12 @@
     storage.max_chunks_up     <%= $service['storage.max_chunks_up'] %>
     storage.metrics           <%= $service['storage.metrics'] %>
     storage.delete_irrecoverable_chunks <%= $service['storage.delete_irrecoverable_chunks'] %>
+<% if $service['health.check'] { %>
+    Health_Check              <%= $service['health.check'] %>
+    HC_Errors_Count           <%= $service['hc.errors_count'] %>
+    HC_Rerty_Failure_Count    <%= $service['hc.retry_failure_count'] %>
+    HC_Period                 <%= $service['hc.period'] %>
+<% } -%>
 
 <%- if $manage_config_dir { %>
 @INCLUDE pipelines/*.conf

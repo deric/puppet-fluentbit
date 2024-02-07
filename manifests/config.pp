@@ -132,7 +132,7 @@ class fluentbit::config (
     undef           => {},
     default         => {
       'health.check'                        => $health_check,
-      'hc.errors_count'                      => $hc_errors_count,
+      'hc.errors_count'                     => $hc_errors_count,
       'hc.retry_failure_count'              => $hc_retry_failure_count,
       'hc.period'                           => $hc_period,
     },

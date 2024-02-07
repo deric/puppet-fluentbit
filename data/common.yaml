@@ -44,6 +44,11 @@ fluentbit::storage_backlog_mem_limit: 5M
 fluentbit::storage_metrics: true
 fluentbit::storage_delete_irrecoverable_chunks: false
 
+fluentbit::health_check: false
+fluentbit::hc_errors_count: 5
+fluentbit::hc_retry_failure_count: 5
+fluentbit::hc_period: 60
+
 fluentbit::manage_plugins_file: true
 fluentbit::plugins_file: '/etc/fluent-bit/plugins.conf'
 

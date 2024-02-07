@@ -111,6 +111,18 @@
 #   located in the configured storage path directory will be deleted when Fluent-Bit starts.
 #   Default value: false
 #
+# @param health_check
+#   Enable or disable health_check
+#   Default Off
+# @param hc_errors_count
+#   Only in use if health_check is enabled. The error count after which the healcheck returns an error.
+#   Default 5
+# @param hc_retry_failure_count
+#   Only in use if health_check is enabled. Retry count till a check returns an error
+#   Default 5
+# @param hc_period
+#   Only in use if health_check is enabled. Time period by second to count the error and retry failure data point
+#   Default 60
 # @param manage_plugins_file
 #   Whether to manage the enabled external plugins
 #
@@ -232,6 +244,12 @@ class fluentbit (
   Boolean                          $storage_metrics,
   Boolean                          $storage_delete_irrecoverable_chunks,
   Optional[String[1]]              $storage_backlog_mem_limit,
+
+  Boolean $health_check,
+  Integer $hc_errors_count,
+  Integer $hc_retry_failure_count,
+  Integer $hc_period,
+
   Integer $coro_stack_size,
   String $plugins_dir,
   String $scripts_dir,

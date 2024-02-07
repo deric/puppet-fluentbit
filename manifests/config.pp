@@ -105,6 +105,10 @@ class fluentbit::config (
   $storage_max_chunks_up = $fluentbit::storage_max_chunks_up
   $storage_metrics = bool2str($fluentbit::storage_metrics, 'On', 'Off')
   $storage_delete_irrecoverable_chunks = bool2str($fluentbit::storage_delete_irrecoverable_chunks, 'On', 'Off')
+  $health_check = bool2str($fluentbit::health_check, 'On', 'Off')
+  $hc_errors_count = $fluentbit::hc_errors_count
+  $hc_retry_failure_count = $fluentbit::hc_retry_failure_count
+  $hc_period = $fluentbit::hc_period
   $scheduler_cap = $fluentbit::scheduler_cap
   $scheduler_base = $fluentbit::scheduler_base
   $json_convert_nan_to_null = $fluentbit::json_convert_nan_to_null
@@ -122,6 +126,15 @@ class fluentbit::config (
       'storage.backlog.mem_limit'           => $storage_backlog_mem_limit,
       'storage.metrics'                     => $storage_metrics,
       'storage.delete_irrecoverable_chunks' => $storage_delete_irrecoverable_chunks,
+    },
+  }
+  $health_config = $health_check ? {
+    undef           => {},
+    default         => {
+      'health.check'                        => $health_check,
+      'hc.errors_count'                     => $hc_errors_count,
+      'hc.retry_failure_count'              => $hc_retry_failure_count,
+      'hc.period'                           => $hc_period,
     },
   }
 
@@ -147,7 +160,8 @@ class fluentbit::config (
           'scheduler.cap'            => $scheduler_cap,
           'scheduler.base'           => $scheduler_base,
           'json.convert_nan_to_null' => $json_convert_nan_to_null,
-        } + $storage_config,
+        } + $storage_config
+          + $health_config,
       },
     ),
   }

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2024-03-11] Release 0.3.0
+
+**Bugfixes**
+ - [Fix yaml issues](https://github.com/deric/puppet-fluentbit/pull/4)
+
+
+[Full changes](https://github.com/deric/puppet-fluentbit/compare/v0.2.0...v0.3.0)
+
+
 ## [2024-02-11] Release 0.2.0
 
 **Features**

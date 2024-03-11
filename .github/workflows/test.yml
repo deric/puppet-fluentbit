@@ -31,6 +31,15 @@ jobs:
           bundler-cache: true
       - name: Puppet Lint
         run: bundle exec rake lint
+  yamllint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: yaml-lint
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: data/
+          config_file: .yamllint
   test:
     runs-on: ubuntu-latest
     strategy:
@@ -85,6 +94,7 @@ jobs:
       - test
       - acceptance
       - lint
+      - yamllint
     runs-on: ubuntu-latest
     name: Test suite
     steps:

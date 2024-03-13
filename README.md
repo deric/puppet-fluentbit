@@ -47,6 +47,8 @@ fluentbit::service_override_unit_file: true
 fluentbit::memory_max: 2G
 ```
 
+All Puppet variables are documented in [REFERENCE.md](./REFERENCE.md).
+
 ### Acceptance tests
 
 ```

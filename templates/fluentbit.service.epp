@@ -11,6 +11,9 @@ EnvironmentFile=-/etc/default/fluent-bit
 ExecStart=<%= $binary_file %> -c <%= $config_file %> --enable-hot-reload
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=always
+<%- if $memory_max { -%>
+MemoryMax=<%= $memory_max %>
+<%- } -%>
 
 [Install]
 WantedBy=multi-user.target

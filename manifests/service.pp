@@ -22,6 +22,7 @@ class fluentbit::service {
           {
             'binary_file' => $fluentbit::binary_file,
             'config_file' => $fluentbit::config_file,
+            'memory_max'  => $fluentbit::memory_max,
           }
         ),
       }

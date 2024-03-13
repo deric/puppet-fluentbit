@@ -161,4 +161,24 @@ describe 'fluentbit' do
               })
     }
   end
+
+  context 'with service memory limit' do
+    let(:params) do
+      {
+        service_override_unit_file: true,
+        memory_max: '2G',
+        manage_service: true,
+      }
+    end
+
+    it {
+      is_expected.to contain_service('fluent-bit')
+        .with_ensure('running')
+    }
+
+    it {
+      is_expected.to contain_systemd__unit_file('fluent-bit.service')
+        .with_content(%r{MemoryMax=2G})
+    }
+  end
 end

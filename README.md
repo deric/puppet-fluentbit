@@ -38,6 +38,14 @@ fluentbit::outputs:
       port: 2021
 ```
 
+## Configuration
+
+
+Limit maximum memory usage per systemd unit:
+```yaml
+fluentbit::service_override_unit_file: true
+fluentbit::memory_max: 2G
+```
 
 ### Acceptance tests
 

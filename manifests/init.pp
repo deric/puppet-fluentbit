@@ -39,6 +39,10 @@
 # @param service_override_unit_file
 #   Override service definition provided by package with a drop-in unit file.
 #
+# @param memory_max
+#   Limit memory usage for the systemd unit (requires `service_override_unit_file` set to `true`)
+#   Memory limit as a string with K, M, G or T suffix, e.g. `2G`
+#
 # @param manage_config_dir
 #   Whether to manage the configuration directory.
 #   When enabled, will remove all unmanaged files from the directory the
@@ -263,6 +267,7 @@ class fluentbit (
   Fluentbit::MultilineParser  $multiline_parsers = {},
   Fluentbit::Stream           $streams = {},
   Array[Stdlib::Absolutepath] $plugins = [],
+  Optional[String[1]]         $memory_max = undef,
 ) {
   $plugins_path = "${config_dir}/${plugins_dir}"
   $scripts_path = "${config_dir}/${scripts_dir}"

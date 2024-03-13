@@ -1,6 +1,6 @@
 {
   "name": "deric-fluentbit",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": "Tomas Barton",
   "summary": "Manage fluentbit installation",
   "license": "Apache-2.0",

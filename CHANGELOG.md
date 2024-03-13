@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2024-03-13] Release 0.4.0
+
+**Features**
+ - [Limit memory for systemd unit](https://github.com/deric/puppet-fluentbit/pull/5)
+
+
+[Full changes](https://github.com/deric/puppet-fluentbit/compare/v0.3.0...v0.4.0)
+
+
 ## [2024-03-11] Release 0.3.0
 
 **Bugfixes**

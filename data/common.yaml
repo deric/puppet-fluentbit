@@ -6,7 +6,7 @@ fluentbit::manage_service: true
 fluentbit::service_enable: true
 fluentbit::service_has_status: true
 fluentbit::service_has_restart: true
-fluentbit::service_restart_command: systemctl reload-or-restart fluent-bit
+fluentbit::service_restart_command: systemctl restart fluent-bit
 fluentbit::service_ensure: running
 fluentbit::service_name: fluent-bit
 fluentbit::service_override_unit_file: false

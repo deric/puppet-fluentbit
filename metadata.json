@@ -1,6 +1,6 @@
 {
   "name": "deric-fluentbit",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "author": "Tomas Barton",
   "summary": "Manage fluentbit installation",
   "license": "Apache-2.0",
@@ -8,7 +8,7 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 2.3.3 < 10.0.0"
+      "version_requirement": ">= 9.0.0 < 10.0.0"
     },
     {
       "name": "puppetlabs/apt",

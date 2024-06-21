@@ -4,7 +4,7 @@
 class fluentbit::install {
   assert_private()
 
-  ensure_packages([$fluentbit::package_name], {
+  stdlib::ensure_packages([$fluentbit::package_name], {
       ensure  => $fluentbit::package_ensure,
   })
 

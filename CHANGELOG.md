@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2024-06-21] Release 1.0.0
+
+**Changes**
+ - **BC** use `stdlib::` prefix for puppet 4.x functions
+ - Puppet 8 compatible
+
+[Full changes](https://github.com/deric/puppet-fluentbit/compare/v0.4.0...v1.0.0)
+
+
 ## [2024-03-13] Release 0.4.0
 
 **Features**

@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+
+## [2024-06-27] Release 1.1.0
+
+**Changes**
+ - Fixed `puppetlabs/apt` requirement
+ - Fixed Puppet 8 warnings
+ - Replaced `merge()` function calls by native `+` operand
+
+[Full changes](https://github.com/deric/puppet-fluentbit/compare/v1.0.0...v1.1.0)
+
+
 ## [2024-06-21] Release 1.0.0
 
 **Changes**

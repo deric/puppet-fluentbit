@@ -72,15 +72,11 @@ define fluentbit::pipeline (
         name          => $plugin,
         pipeline_type => $pipeline,
         order         => $order,
-        properties    => merge(
-          $db_settings,
-          {
-            alias => $title,
-          },
-          $properties,
-          $script_settings,
-          $upstream_settings,
-        )
+        properties    => $db_settings
+        + { alias => $title }
+        + $properties
+        + $script_settings
+        + $upstream_settings,
       }
     ),
   }

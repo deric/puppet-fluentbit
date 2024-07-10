@@ -7,8 +7,9 @@
   name       <%= $node_name %>
   host       <%= $node['host'] %>
   port       <%= $node['port'] %>
+<% if $node['tls'] { -%>
   tls        <%= $node['tls'] %>
   tls.verify <%= $node['tls_verify'] %>
-
+<% } -%>
 <% } -%>
 # <%= $nodes.length %> nodes

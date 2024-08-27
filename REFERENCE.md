@@ -102,7 +102,6 @@ The following parameters are available in the `fluentbit` class:
 * [`service_restart_command`](#-fluentbit--service_restart_command)
 * [`service_has_restart`](#-fluentbit--service_has_restart)
 * [`service_override_unit_file`](#-fluentbit--service_override_unit_file)
-* [`memory_max`](#-fluentbit--memory_max)
 * [`service_ensure`](#-fluentbit--service_ensure)
 * [`service_name`](#-fluentbit--service_name)
 * [`manage_config_dir`](#-fluentbit--manage_config_dir)
@@ -110,6 +109,7 @@ The following parameters are available in the `fluentbit` class:
 * [`inputs`](#-fluentbit--inputs)
 * [`outputs`](#-fluentbit--outputs)
 * [`filters`](#-fluentbit--filters)
+* [`memory_max`](#-fluentbit--memory_max)
 
 ##### <a name="-fluentbit--manage_storage_dir"></a>`manage_storage_dir`
 
@@ -468,14 +468,6 @@ Data type: `Boolean`
 
 
 
-##### <a name="-fluentbit--memory_max"></a>`memory_max`
-
-Data type: `Optional[String[1]]`
-
-
-
-Default value: `undef`
-
 ##### <a name="-fluentbit--service_ensure"></a>`service_ensure`
 
 Data type: `Stdlib::Ensure::Service`
@@ -523,6 +515,14 @@ Data type: `Fluentbit::PipelinePlugin`
 
 
 Default value: `{}`
+
+##### <a name="-fluentbit--memory_max"></a>`memory_max`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
 
 ### <a name="fluentbit--config"></a>`fluentbit::config`
 
@@ -854,6 +854,8 @@ Alias of
 Struct[{
   host => String[1],
   port => Integer,
+  Optional[tls]  => Enum['On', 'Off'],
+  Optional[tls_verify] => Enum['On', 'Off']
 }]
 ```
 

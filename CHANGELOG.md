@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2024-08-27] Release 1.2.0
+
+**Features**
+ - [make tls configurable](https://github.com/deric/puppet-fluentbit/pull/6)
+
+**Changes**
+ - Support `puppet/systemd` 7.x
+
+[Full changes](https://github.com/deric/puppet-fluentbit/compare/v1.1.0...v1.2.0)
 
 ## [2024-06-27] Release 1.1.0
 

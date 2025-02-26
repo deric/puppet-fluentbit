@@ -1,4 +1,5 @@
 ---
+fluentbit::format: classic
 fluentbit::manage_package_repo: true
 fluentbit::package_ensure: present
 fluentbit::package_name: fluent-bit
@@ -17,10 +18,10 @@ fluentbit::manage_storage_dir: true
 
 fluentbit::binary_file: /opt/fluent-bit/bin/fluent-bit
 fluentbit::config_dir: /etc/fluent-bit
-fluentbit::plugins_dir: pipelines
+fluentbit::pipelines_dir: pipelines
 fluentbit::scripts_dir: lua-scripts
 fluentbit::data_dir: /opt/fluent-bit/db
-fluentbit::config_file: /etc/fluent-bit/fluent-bit.conf
+fluentbit::config_file: 'fluent-bit'
 fluentbit::config_file_mode: '0644'
 fluentbit::config_folder_mode: '0750'
 fluentbit::flush: 5
@@ -50,13 +51,13 @@ fluentbit::hc_retry_failure_count: 5
 fluentbit::hc_period: 60
 
 fluentbit::manage_plugins_file: true
-fluentbit::plugins_file: /etc/fluent-bit/plugins.conf
+fluentbit::plugins_file: plugins
 
 fluentbit::manage_streams_file: true
-fluentbit::streams_file: /etc/fluent-bit/streams.conf
+fluentbit::streams_file: streams
 
 fluentbit::manage_parsers_file: true
-fluentbit::parsers_file: /etc/fluent-bit/parsers.conf
+fluentbit::parsers_file: parsers
 
 fluentbit::parsers:
   apache:

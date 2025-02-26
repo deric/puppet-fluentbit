@@ -2,6 +2,14 @@
 #
 # @see https://docs.fluentbit.io/manual/
 #
+# @param format
+#   Configuration files format, either `classic` or `yaml`.
+#   `classic` is to be depcrecated in fluent-bit end of 2025,
+#   and does not support all options available in `yaml` (like processors).
+#   When using the official package, with `$format = 'yaml'`,
+#   you will need to override the systemd service to use the yaml config file
+#   (set `service_override_unit_file = true`), until upstream fixes their packaging.
+#
 # @param manage_package_repo Installs the package repositories
 # @param inputs Hash of the INPUT plugins to be configured
 # @param outputs Hash of the OUTPUT plugins to be configured
@@ -60,10 +68,12 @@
 # @param config_dir
 #   Absolute path to directory where configuration files are stored.
 #
-# @param plugins_dir
-#   Directory name for plugins, relative to @config_dir
+# @param pipelines_dir
+#   Directory name for pipelines, relative to `$config_dir`
+#
 # @param scripts_dir
-#   Directory name for scripts, relative to @config_dir
+#   Directory name for scripts, relative to `$config_dir`
+#
 # @param data_dir
 #   Path to data directory that will be used by plugins using DB feature.
 #
@@ -71,7 +81,8 @@
 #   Path of the daemon binary.
 #
 # @param config_file
-#   Path of the daemon configuration.
+#   The name of the main config file, relative to `$config_dir` and  without extension.
+#   Default `fluent-bit`.
 #
 # @param config_file_mode
 #   File mode to apply to the daemon configuration file
@@ -118,20 +129,25 @@
 # @param health_check
 #   Enable or disable health_check
 #   Default Off
+#
 # @param hc_errors_count
 #   Only in use if health_check is enabled. The error count after which the healcheck returns an error.
 #   Default 5
+#
 # @param hc_retry_failure_count
 #   Only in use if health_check is enabled. Retry count till a check returns an error
 #   Default 5
+#
 # @param hc_period
 #   Only in use if health_check is enabled. Time period by second to count the error and retry failure data point
 #   Default 60
+#
 # @param manage_plugins_file
 #   Whether to manage the enabled external plugins
 #
 # @param plugins_file
-#   A plugins configuration file allows to define paths for external plugins.
+#   Name of the plugins configuration file, relative to `$config_dir`,
+#   and without file extension.
 #
 # @param plugins
 #   List of external plugin objects to enable
@@ -140,7 +156,8 @@
 #   Whether to manage the stream processing configuration
 #
 # @param streams_file
-#   Path for the Stream Processor configuration file.
+#   Name of the streams configuration file, relative to `$config_dir`,
+#   and without file extension.
 #
 # @param streams
 #   Stream processing tasks
@@ -152,7 +169,8 @@
 #   Whether to manage the parser definitions
 #
 # @param parsers_file
-#   Path for a parsers configuration file. Multiple Parsers_File entries can be used.
+#   Name of the parsers configuration file, relative to `$config_dir`,
+#   and without file extension.
 #
 # @param parsers
 #   List of parser definitions.
@@ -197,49 +215,54 @@
 #   macro definitions to use in the configuration file
 #   the will be registered using the *@SET* command or using Env section in YAML syntax.
 #
+# @param includes
+#   Extra files to include in the config.
+#   (Only supported in `yaml` config format).
+#
 # @example
 #   include fluentbit
 class fluentbit (
-  Boolean                 $manage_package_repo,
-  String[1]               $package_ensure,
-  String[1]               $package_name,
+  Enum['classic', 'yaml']          $format,
+  Boolean                          $manage_package_repo,
+  String[1]                        $package_ensure,
+  String[1]                        $package_name,
 
-  Boolean                 $manage_service,
-  Boolean                 $service_enable,
-  Boolean                 $service_has_status,
-  Optional[String[1]]     $service_restart_command,
-  Boolean                 $service_has_restart,
-  Boolean                 $service_override_unit_file,
-  Stdlib::Ensure::Service $service_ensure,
-  String[1]               $service_name,
+  Boolean                          $manage_service,
+  Boolean                          $service_enable,
+  Boolean                          $service_has_status,
+  Optional[String[1]]              $service_restart_command,
+  Boolean                          $service_has_restart,
+  Boolean                          $service_override_unit_file,
+  Stdlib::Ensure::Service          $service_ensure,
+  String[1]                        $service_name,
 
-  Boolean                 $manage_config_dir,
-  Boolean                 $manage_data_dir,
-  Boolean                 $manage_storage_dir,
+  Boolean                          $manage_config_dir,
+  Boolean                          $manage_data_dir,
+  Boolean                          $manage_storage_dir,
 
-  Stdlib::Absolutepath $binary_file,
-  Stdlib::Absolutepath $config_dir,
-  Stdlib::Absolutepath $data_dir,
-  Stdlib::Absolutepath $config_file,
-  Stdlib::Filemode $config_file_mode,
-  Stdlib::Filemode $config_folder_mode,
-  Integer $flush,
-  Integer $grace,
-  Boolean $daemon,
-  Enum['UDP', 'TCP'] $dns_mode,
-  Fluentbit::Loglevel $log_level,
-  Boolean $manage_parsers_file,
-  Stdlib::Absolutepath $parsers_file,
-  Boolean $manage_plugins_file,
-  Stdlib::Absolutepath $plugins_file,
-  Boolean                       $manage_streams_file,
-  Stdlib::Absolutepath          $streams_file,
-  Boolean                       $http_server,
-  Stdlib::IP::Address::Nosubnet $http_listen,
-  Stdlib::Port                  $http_port,
-  Integer                       $scheduler_cap,
-  Integer                       $scheduler_base,
-  Boolean                       $json_convert_nan_to_null,
+  Stdlib::Absolutepath             $binary_file,
+  Stdlib::Absolutepath             $config_dir,
+  Stdlib::Absolutepath             $data_dir,
+  Stdlib::Absolutepath             $config_file,
+  Stdlib::Filemode                 $config_file_mode,
+  Stdlib::Filemode                 $config_folder_mode,
+  Integer                          $flush,
+  Integer                          $grace,
+  Boolean                          $daemon,
+  Enum['UDP', 'TCP']               $dns_mode,
+  Fluentbit::Loglevel              $log_level,
+  Boolean                          $manage_parsers_file,
+  String                           $parsers_file,
+  Boolean                          $manage_plugins_file,
+  String                           $plugins_file,
+  Boolean                          $manage_streams_file,
+  String                           $streams_file,
+  Boolean                          $http_server,
+  Stdlib::IP::Address::Nosubnet    $http_listen,
+  Stdlib::Port                     $http_port,
+  Integer                          $scheduler_cap,
+  Integer                          $scheduler_base,
+  Boolean                          $json_convert_nan_to_null,
 
   Optional[Stdlib::Absolutepath]   $storage_path,
   Optional[Enum['normal', 'full']] $storage_sync,
@@ -249,28 +272,37 @@ class fluentbit (
   Boolean                          $storage_delete_irrecoverable_chunks,
   Optional[String[1]]              $storage_backlog_mem_limit,
 
-  Boolean $health_check,
-  Integer $hc_errors_count,
-  Integer $hc_retry_failure_count,
-  Integer $hc_period,
+  Boolean                          $health_check,
+  Integer                          $hc_errors_count,
+  Integer                          $hc_retry_failure_count,
+  Integer                          $hc_period,
 
-  Integer $coro_stack_size,
-  String $plugins_dir,
-  String $scripts_dir,
+  Integer                          $coro_stack_size,
+  String                           $pipelines_dir,
+  String                           $scripts_dir,
 
-  Fluentbit::Parser           $parsers,
-  Fluentbit::PipelinePlugin   $inputs = {},
-  Fluentbit::PipelinePlugin   $outputs = {},
-  Fluentbit::PipelinePlugin   $filters = {},
-  Hash[String, Hash]          $upstreams = {},
-  Hash                        $variables = {},
-  Fluentbit::MultilineParser  $multiline_parsers = {},
-  Fluentbit::Stream           $streams = {},
-  Array[Stdlib::Absolutepath] $plugins = [],
-  Optional[String[1]]         $memory_max = undef,
+  Fluentbit::Parser                $parsers,
+  Fluentbit::PipelinePlugin        $inputs            = {},
+  Fluentbit::PipelinePlugin        $outputs           = {},
+  Fluentbit::PipelinePlugin        $filters           = {},
+  Hash[String, Hash]               $upstreams         = {},
+  Hash                             $variables         = {},
+  Fluentbit::MultilineParser       $multiline_parsers = {},
+  Fluentbit::Stream                $streams           = {},
+  Array[Stdlib::Absolutepath]      $plugins           = [],
+  Optional[String[1]]              $memory_max        = undef,
+  Array[Stdlib::Absolutepath]      $includes          = [],
 ) {
-  $plugins_path = "${config_dir}/${plugins_dir}"
+  $pipelines_path = "${config_dir}/${pipelines_dir}"
   $scripts_path = "${config_dir}/${scripts_dir}"
+  $config_ext = $format ? {
+    'classic' => 'conf',
+    'yaml'    => 'yaml',
+  }
+  $config_path = "${config_dir}/${config_file}.${config_ext}"
+  $parsers_path = "${config_dir}/${parsers_file}.${config_ext}"
+  $plugins_path = "${config_dir}/${plugins_file}.${config_ext}"
+  $streams_path = "${config_dir}/${streams_file}.${config_ext}"
 
   contain fluentbit::repo
   contain fluentbit::install

@@ -17,22 +17,15 @@ define fluentbit::upstream (
   String[1]            $upstream_name = $name,
   Stdlib::Absolutepath $config_dir    = $fluentbit::config_dir,
 ) {
-  file { "${config_dir}/upstream-${upstream_name}.conf":
-    ensure  => file,
-    mode    => $fluentbit::config_file_mode,
-    content => epp('fluentbit/upstream.conf.epp',
+  if $fluentbit::format == 'classic' {
+    $content = epp('fluentbit/upstream.conf.epp',
       {
         'name'  => $upstream_name,
         'nodes' => $nodes,
       },
-    ),
-    notify  => Service[$fluentbit::service_name],
-  }
-
-  file { "${config_dir}/upstream-${upstream_name}.yaml":
-    ensure  => file,
-    mode    => $fluentbit::config_file_mode,
-    content => stdlib::to_yaml(
+    )
+  } elsif $fluentbit::format == 'yaml' {
+    $content = stdlib::to_yaml(
       {
         upstream_servers => [
           {
@@ -42,7 +35,15 @@ define fluentbit::upstream (
         ]
       },
       { line_width => -1 }
-    ),
+    )
+  } else {
+    fail('Welp, something fucked up')
+  }
+
+  file { "${config_dir}/upstream-${upstream_name}.${fluentbit::config_ext}":
+    ensure  => file,
+    content => $content,
+    mode    => $fluentbit::config_file_mode,
     notify  => Service[$fluentbit::service_name],
   }
 }

@@ -72,7 +72,7 @@
 #   Path of the daemon binary.
 #
 # @param config_file
-#   Path of the daemon configuration.
+#   The name of main config file without extension (default: `fluent-bit`).
 #
 # @param config_file_mode
 #   File mode to apply to the daemon configuration file
@@ -223,7 +223,6 @@ class fluentbit (
   Stdlib::Absolutepath $binary_file,
   Stdlib::Absolutepath $config_dir,
   Stdlib::Absolutepath $data_dir,
-  Stdlib::Absolutepath $config_file,
   Stdlib::Filemode $config_file_mode,
   Stdlib::Filemode $config_folder_mode,
   Integer $flush,
@@ -262,6 +261,7 @@ class fluentbit (
   String $scripts_dir,
 
   Fluentbit::Parser           $parsers,
+  Optional[String] $config_file = undef,
   Fluentbit::PipelinePlugin   $inputs = {},
   Fluentbit::PipelinePlugin   $outputs = {},
   Fluentbit::PipelinePlugin   $filters = {},
@@ -275,6 +275,16 @@ class fluentbit (
 ) {
   $plugins_path = "${config_dir}/${plugins_dir}"
   $scripts_path = "${config_dir}/${scripts_dir}"
+
+  $_conf = ($config_file == undef) ? {
+    true  => 'fluent-bit',
+    false => $config_file,
+  }
+
+  $config_path = ($format == 'classic') ? {
+    true  => "${config_dir}/${_conf}.conf",
+    false => "${config_dir}/${_conf}.yaml",
+  }
 
   contain fluentbit::repo
   contain fluentbit::install

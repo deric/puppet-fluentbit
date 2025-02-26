@@ -138,7 +138,7 @@ class fluentbit::config (
     },
   }
 
-  file { $fluentbit::config_file:
+  file { $fluentbit::config_path:
     mode    => $fluentbit::config_file_mode,
     content => epp('fluentbit/fluentbit.conf.epp',
       {

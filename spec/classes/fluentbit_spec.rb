@@ -38,7 +38,6 @@ describe 'fluentbit' do
     let(:params) do
       {
         config_dir: '/etc/fluentbit',
-        config_file: '/etc/fluentbit/fluent-bit.conf',
       }
     end
 
@@ -65,6 +64,31 @@ describe 'fluentbit' do
         ensure: 'directory',
         purge: true,
         recurse: true,
+      )
+    }
+  end
+
+  context 'with custom config file' do
+    let(:params) do
+      {
+        config_dir: '/etc/fluentbit',
+        config_file: 'fluent',
+      }
+    end
+
+    it { is_expected.to compile.with_all_deps }
+
+    it {
+      is_expected.to contain_file('/etc/fluentbit').with(
+        ensure: 'directory',
+        purge: true,
+        recurse: true,
+      )
+    }
+
+    it {
+      is_expected.to contain_file('/etc/fluentbit/fluent.conf').with(
+        ensure: 'file',
       )
     }
   end
@@ -221,6 +245,21 @@ describe 'fluentbit' do
       it {
         is_expected.to contain_file('/etc/fluent-bit/fluent-bit.yaml')
           .with_content(%r{outputs:\n\s+prometheus:})
+      }
+    end
+
+    context 'override service file' do
+      let(:params) do
+        {
+          format: 'yaml',
+          service_override_unit_file: true,
+        }
+      end
+
+      it {
+        is_expected.to contain_file('/etc/systemd/system/fluent-bit.service').with(
+          ensure: 'file',
+        ).with_content(%r{ExecStart=/opt/fluent-bit/bin/fluent-bit -c /etc/fluent-bit/fluent-bit.yaml --enable-hot-reload})
       }
     end
   end

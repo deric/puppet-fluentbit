@@ -21,7 +21,6 @@ fluentbit::config_dir: /etc/fluent-bit
 fluentbit::plugins_dir: pipelines
 fluentbit::scripts_dir: lua-scripts
 fluentbit::data_dir: /opt/fluent-bit/db
-fluentbit::config_file: /etc/fluent-bit/fluent-bit.conf
 fluentbit::config_file_mode: '0644'
 fluentbit::config_folder_mode: '0750'
 fluentbit::flush: 5

@@ -41,7 +41,7 @@ class fluentbit::config_yaml (
     },
   } + $fluentbit::yaml
 
-  file { "${config_dir}/fluent-bit.yaml":
+  file { $fluentbit::config_path:
     mode    => $fluentbit::config_file_mode,
     content => stdlib::to_yaml($config_hash),
   }

@@ -38,10 +38,10 @@ class fluentbit::config_yaml (
       'inputs' => $fluentbit::inputs,
       'outputs' => $fluentbit::outputs,
       'filters' => $fluentbit::filters,
-    }
+    },
   } + $fluentbit::yaml
 
-  file { "$config_dir/fluent-bit.yaml":
+  file { "${config_dir}/fluent-bit.yaml":
     mode    => $fluentbit::config_file_mode,
     content => stdlib::to_yaml($config_hash),
   }

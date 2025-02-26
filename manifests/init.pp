@@ -243,7 +243,7 @@ class fluentbit (
   Stdlib::Absolutepath             $binary_file,
   Stdlib::Absolutepath             $config_dir,
   Stdlib::Absolutepath             $data_dir,
-  Stdlib::Absolutepath             $config_file,
+  String                           $config_file,
   Stdlib::Filemode                 $config_file_mode,
   Stdlib::Filemode                 $config_folder_mode,
   Integer                          $flush,

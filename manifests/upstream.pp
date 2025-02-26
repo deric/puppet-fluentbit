@@ -33,8 +33,7 @@ define fluentbit::upstream (
             nodes => $nodes.map |$k, $v| { { name => $k } + $v },
           }
         ]
-      },
-      { line_width => -1 }
+      }
     )
   } else {
     fail('Welp, something fucked up')

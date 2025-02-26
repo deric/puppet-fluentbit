@@ -98,8 +98,7 @@ define fluentbit::pipeline (
               + $upstream_settings,
             ]
           }
-        },
-        { line_width => -1 }
+        }
       ),
     }
   } else {

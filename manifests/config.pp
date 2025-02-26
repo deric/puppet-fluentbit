@@ -173,7 +173,6 @@ class fluentbit::config (
         service  => $service_config,
         includes => $yaml_includes,
       },
-      { line_width => -1 }
     )
 
     $parsers_content = stdlib::to_yaml(
@@ -185,11 +184,10 @@ class fluentbit::config (
           { name => $k } + $v
         },
       },
-      { line_width => -1 }
     )
 
-    $plugins_content = stdlib::to_yaml({ plugins => $fluentbit::plugins }, { line_width => -1 })
-    $streams_content = stdlib::to_yaml({ plugins => $fluentbit::streams }, { line_width => -1 })
+    $plugins_content = stdlib::to_yaml({ plugins => $fluentbit::plugins })
+    $streams_content = stdlib::to_yaml({ plugins => $fluentbit::streams })
   } else {
     fail('Welp, something fucked up')
   }

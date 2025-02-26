@@ -28,4 +28,20 @@ define fluentbit::upstream (
     ),
     notify  => Service[$fluentbit::service_name],
   }
+
+  file { "${config_dir}/upstream-${upstream_name}.yaml":
+    ensure  => file,
+    mode    => $fluentbit::config_file_mode,
+    content => stdlib::to_yaml(
+      {
+        upstream_servers => [
+          {
+            name  => $upstream_name,
+            nodes => $nodes.map |$k, $v| { { name => $k } + $v },
+          }
+        ]
+      }
+    ),
+    notify  => Service[$fluentbit::service_name],
+  }
 }

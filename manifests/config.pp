@@ -201,6 +201,7 @@ class fluentbit::config (
     mode    => $fluentbit::config_file_mode,
     content => stdlib::to_yaml(
       {
+        env      => $variables,
         service  => {
           'flush'                    => $flush,
           'grace'                    => $grace,

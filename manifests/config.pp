@@ -190,7 +190,9 @@ class fluentbit::config (
 
   if $fluentbit::manage_config_dir {
     $includes = [
-      'parsers.conf.yaml',
+      "${fluentbit::parsers_file}.yaml",
+      "${fluentbit::plugins_file}.yaml",
+      "${fluentbit::streams_file}.yaml",
       'pipelines/*.yaml',
     ]
   } else {
@@ -208,8 +210,6 @@ class fluentbit::config (
           'daemon'                   => $daemon,
           'dns.mode'                 => $dns_mode,
           'log_level'                => $log_level,
-          'plugins_file'             => $plugins_file,
-          'streams_file'             => $streams_file,
           'http_server'              => $http_server,
           'http_listen'              => $http_listen,
           'http_port'                => $http_port,
@@ -218,7 +218,7 @@ class fluentbit::config (
           'scheduler.base'           => $scheduler_base,
           'json.convert_nan_to_null' => $json_convert_nan_to_null,
         } + $storage_config + $health_config,
-        includes => [],
+        includes => $includes,
       }
     ),
   }
@@ -230,5 +230,13 @@ class fluentbit::config (
         multiline_parsers => $fluentbit::multiline_parsers,
       }
     ),
+  }
+
+  file { "${fluentbit::plugins_file}.yaml":
+    content => stdlib::to_yaml({ plugins => $fluentbit::plugins }),
+  }
+
+  file { "${fluentbit::streams_file}.yaml":
+    content => stdlib::to_yaml({ streams => $fluentbit::streams }),
   }
 }

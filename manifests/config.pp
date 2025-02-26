@@ -190,6 +190,7 @@ class fluentbit::config (
 
   if $fluentbit::manage_config_dir {
     $includes = [
+      'parsers.conf.yaml',
       'pipelines/*.yaml',
     ]
   } else {
@@ -206,7 +207,6 @@ class fluentbit::config (
           'daemon'                   => $daemon,
           'dns.mode'                 => $dns_mode,
           'log_level'                => $log_level,
-          'parsers_file'             => $parsers_file,
           'plugins_file'             => $plugins_file,
           'streams_file'             => $streams_file,
           'http_server'              => $http_server,
@@ -218,6 +218,15 @@ class fluentbit::config (
           'json.convert_nan_to_null' => $json_convert_nan_to_null,
         } + $storage_config + $health_config,
         includes => [],
+      }
+    ),
+  }
+
+  file { "${fluentbit::parsers_file}.yaml":
+    content => stdlib::to_yaml(
+      {
+        parsers           => $fluentbit::parsers,
+        multiline_parsers => $fluentbit::multiline_parsers,
       }
     ),
   }

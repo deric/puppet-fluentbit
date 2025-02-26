@@ -181,4 +181,47 @@ describe 'fluentbit' do
         .with_content(%r{MemoryMax=2G})
     }
   end
+
+  describe 'with yaml config' do
+    context 'with default parameters' do
+      let(:params) do
+        {
+          format: 'yaml',
+        }
+      end
+
+      it { is_expected.to compile.with_all_deps }
+      it { is_expected.to contain_class('fluentbit::config_yaml') }
+      it { is_expected.not_to contain_class('fluentbit::config') }
+
+      it {
+        is_expected.to contain_file('/etc/fluent-bit/fluent-bit.yaml')
+          .with_ensure('file')
+          .with_content(%r{^---\n})
+      }
+    end
+
+    context 'configure outputs' do
+      let(:params) do
+        {
+          format: 'yaml',
+          outputs: {
+            'prometheus': {
+              'plugin': 'prometheus_exporter',
+              'properties': {
+                'match': 'nginx.metrics.*',
+                'host': '0.0.0.0',
+                'port': '2021',
+              }
+            }
+          },
+        }
+      end
+
+      it {
+        is_expected.to contain_file('/etc/fluent-bit/fluent-bit.yaml')
+          .with_content(%r{outputs:\n\s+prometheus:})
+      }
+    end
+  end
 end

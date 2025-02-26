@@ -193,7 +193,7 @@ class fluentbit::config (
       "${fluentbit::parsers_file}.yaml",
       "${fluentbit::plugins_file}.yaml",
       "${fluentbit::streams_file}.yaml",
-      'pipelines/*.yaml',
+      "${fluentbit::plugins_path}/*.yaml",
     ]
   } else {
     $includes = []

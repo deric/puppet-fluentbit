@@ -40,7 +40,8 @@ define fluentbit::upstream (
             nodes => $nodes.map |$k, $v| { { name => $k } + $v },
           }
         ]
-      }
+      },
+      { line_width => -1 }
     ),
     notify  => Service[$fluentbit::service_name],
   }

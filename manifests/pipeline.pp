@@ -105,7 +105,8 @@ define fluentbit::pipeline (
             + $upstream_settings_yaml,
           ]
         }
-      }
+      },
+      { line_width => -1 }
     ),
   }
 }

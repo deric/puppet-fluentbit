@@ -219,7 +219,8 @@ class fluentbit::config (
           'json.convert_nan_to_null' => $json_convert_nan_to_null,
         } + $storage_config + $health_config,
         includes => $includes,
-      }
+      },
+      { line_width => -1 }
     ),
   }
 
@@ -228,15 +229,16 @@ class fluentbit::config (
       {
         parsers           => $fluentbit::parsers,
         multiline_parsers => $fluentbit::multiline_parsers,
-      }
+      },
+      { line_width => -1 }
     ),
   }
 
   file { "${fluentbit::plugins_file}.yaml":
-    content => stdlib::to_yaml({ plugins => $fluentbit::plugins }),
+    content => stdlib::to_yaml({ plugins => $fluentbit::plugins }, { line_width => -1 })
   }
 
   file { "${fluentbit::streams_file}.yaml":
-    content => stdlib::to_yaml({ streams => $fluentbit::streams }),
+    content => stdlib::to_yaml({ plugins => $fluentbit::streams }, { line_width => -1 })
   }
 }

@@ -94,14 +94,16 @@ define fluentbit::pipeline (
     content => stdlib::to_yaml(
       {
         pipeline => {
-          "${pipeline}s" => {
-            name  => $plugin,
-            alias => $title,
-          }
-          + $db_settings
-          + $properties
-          + $script_settings
-          + $upstream_settings_yaml,
+          "${pipeline}s" => [
+            {
+              name  => $plugin,
+              alias => $title,
+            }
+            + $db_settings
+            + $properties
+            + $script_settings
+            + $upstream_settings_yaml,
+          ]
         }
       }
     ),

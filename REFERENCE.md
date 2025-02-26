@@ -51,7 +51,7 @@ The following parameters are available in the `fluentbit` class:
 
 * [`manage_storage_dir`](#-fluentbit--manage_storage_dir)
 * [`config_dir`](#-fluentbit--config_dir)
-* [`plugins_dir`](#-fluentbit--plugins_dir)
+* [`pipelines_dir`](#-fluentbit--pipelines_dir)
 * [`scripts_dir`](#-fluentbit--scripts_dir)
 * [`data_dir`](#-fluentbit--data_dir)
 * [`binary_file`](#-fluentbit--binary_file)
@@ -93,6 +93,8 @@ The following parameters are available in the `fluentbit` class:
 * [`scheduler_base`](#-fluentbit--scheduler_base)
 * [`json_convert_nan_to_null`](#-fluentbit--json_convert_nan_to_null)
 * [`variables`](#-fluentbit--variables)
+* [`includes`](#-fluentbit--includes)
+* [`format`](#-fluentbit--format)
 * [`manage_package_repo`](#-fluentbit--manage_package_repo)
 * [`package_ensure`](#-fluentbit--package_ensure)
 * [`package_name`](#-fluentbit--package_name)
@@ -124,17 +126,17 @@ Data type: `Stdlib::Absolutepath`
 
 Absolute path to directory where configuration files are stored.
 
-##### <a name="-fluentbit--plugins_dir"></a>`plugins_dir`
+##### <a name="-fluentbit--pipelines_dir"></a>`pipelines_dir`
 
 Data type: `String`
 
-Directory name for plugins, relative to @config_dir
+Directory name for pipelines, relative to `$config_dir`
 
 ##### <a name="-fluentbit--scripts_dir"></a>`scripts_dir`
 
 Data type: `String`
 
-Directory name for scripts, relative to @config_dir
+Directory name for scripts, relative to `$config_dir`
 
 ##### <a name="-fluentbit--data_dir"></a>`data_dir`
 
@@ -150,9 +152,10 @@ Path of the daemon binary.
 
 ##### <a name="-fluentbit--config_file"></a>`config_file`
 
-Data type: `Stdlib::Absolutepath`
+Data type: `String`
 
-Path of the daemon configuration.
+The name of the main config file, relative to `$config_dir` and  without extension.
+Default `fluent-bit`.
 
 ##### <a name="-fluentbit--config_file_mode"></a>`config_file_mode`
 
@@ -259,9 +262,10 @@ Whether to manage the enabled external plugins
 
 ##### <a name="-fluentbit--plugins_file"></a>`plugins_file`
 
-Data type: `Stdlib::Absolutepath`
+Data type: `String`
 
-A plugins configuration file allows to define paths for external plugins.
+Name of the plugins configuration file, relative to `$config_dir`,
+and without file extension.
 
 ##### <a name="-fluentbit--plugins"></a>`plugins`
 
@@ -279,9 +283,10 @@ Whether to manage the stream processing configuration
 
 ##### <a name="-fluentbit--streams_file"></a>`streams_file`
 
-Data type: `Stdlib::Absolutepath`
+Data type: `String`
 
-Path for the Stream Processor configuration file.
+Name of the streams configuration file, relative to `$config_dir`,
+and without file extension.
 
 ##### <a name="-fluentbit--streams"></a>`streams`
 
@@ -307,9 +312,10 @@ Whether to manage the parser definitions
 
 ##### <a name="-fluentbit--parsers_file"></a>`parsers_file`
 
-Data type: `Stdlib::Absolutepath`
+Data type: `String`
 
-Path for a parsers configuration file. Multiple Parsers_File entries can be used.
+Name of the parsers configuration file, relative to `$config_dir`,
+and without file extension.
 
 ##### <a name="-fluentbit--parsers"></a>`parsers`
 
@@ -413,6 +419,21 @@ macro definitions to use in the configuration file
 the will be registered using the *@SET* command or using Env section in YAML syntax.
 
 Default value: `{}`
+
+##### <a name="-fluentbit--includes"></a>`includes`
+
+Data type: `Array[Stdlib::Absolutepath]`
+
+Extra files to include in the config.
+(Only supported in `yaml` config format).
+
+Default value: `[]`
+
+##### <a name="-fluentbit--format"></a>`format`
+
+Data type: `Enum['classic', 'yaml']`
+
+
 
 ##### <a name="-fluentbit--manage_package_repo"></a>`manage_package_repo`
 
@@ -533,7 +554,7 @@ configures the main fluentbit main config
 The following parameters are available in the `fluentbit::config` class:
 
 * [`config_dir`](#-fluentbit--config--config_dir)
-* [`plugins_path`](#-fluentbit--config--plugins_path)
+* [`pipelines_path`](#-fluentbit--config--pipelines_path)
 * [`scripts_path`](#-fluentbit--config--scripts_path)
 
 ##### <a name="-fluentbit--config--config_dir"></a>`config_dir`
@@ -544,13 +565,13 @@ Absolute path to main configuration directory
 
 Default value: `$fluentbit::config_dir`
 
-##### <a name="-fluentbit--config--plugins_path"></a>`plugins_path`
+##### <a name="-fluentbit--config--pipelines_path"></a>`pipelines_path`
 
 Data type: `Stdlib::Absolutepath`
 
 
 
-Default value: `$fluentbit::plugins_path`
+Default value: `$fluentbit::pipelines_path`
 
 ##### <a name="-fluentbit--config--scripts_path"></a>`scripts_path`
 

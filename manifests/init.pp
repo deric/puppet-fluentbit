@@ -1,6 +1,7 @@
 # @summary Manage fluentbit installation
 #
 # @see https://docs.fluentbit.io/manual/
+# @param format Configuration files format, either `classic` or `yaml`.
 #
 # @param manage_package_repo Installs the package repositories
 # @param inputs Hash of the INPUT plugins to be configured
@@ -71,7 +72,7 @@
 #   Path of the daemon binary.
 #
 # @param config_file
-#   Path of the daemon configuration.
+#   The name of main config file without extension (default: `fluent-bit`).
 #
 # @param config_file_mode
 #   File mode to apply to the daemon configuration file
@@ -197,9 +198,11 @@
 #   macro definitions to use in the configuration file
 #   the will be registered using the *@SET* command or using Env section in YAML syntax.
 #
+# @param yaml Configuration that will be converted to yaml (requires `fluentbit:format` set to `yaml`).
 # @example
 #   include fluentbit
 class fluentbit (
+  Enum['classic', 'yaml'] $format,
   Boolean                 $manage_package_repo,
   String[1]               $package_ensure,
   String[1]               $package_name,
@@ -220,7 +223,6 @@ class fluentbit (
   Stdlib::Absolutepath $binary_file,
   Stdlib::Absolutepath $config_dir,
   Stdlib::Absolutepath $data_dir,
-  Stdlib::Absolutepath $config_file,
   Stdlib::Filemode $config_file_mode,
   Stdlib::Filemode $config_folder_mode,
   Integer $flush,
@@ -259,6 +261,7 @@ class fluentbit (
   String $scripts_dir,
 
   Fluentbit::Parser           $parsers,
+  Optional[String] $config_file = undef,
   Fluentbit::PipelinePlugin   $inputs = {},
   Fluentbit::PipelinePlugin   $outputs = {},
   Fluentbit::PipelinePlugin   $filters = {},
@@ -268,31 +271,52 @@ class fluentbit (
   Fluentbit::Stream           $streams = {},
   Array[Stdlib::Absolutepath] $plugins = [],
   Optional[String[1]]         $memory_max = undef,
+  Hash                        $yaml = {},
 ) {
   $plugins_path = "${config_dir}/${plugins_dir}"
   $scripts_path = "${config_dir}/${scripts_dir}"
 
+  $_conf = ($config_file == undef) ? {
+    true  => 'fluent-bit',
+    false => $config_file,
+  }
+
+  $config_path = ($format == 'classic') ? {
+    true  => "${config_dir}/${_conf}.conf",
+    false => "${config_dir}/${_conf}.yaml",
+  }
+
   contain fluentbit::repo
   contain fluentbit::install
-  contain fluentbit::config
   contain fluentbit::service
 
-  Class['fluentbit::repo']
-  -> Class['fluentbit::install']
-  -> Class['fluentbit::config']
-  ~> Class['fluentbit::service']
+  if $format == 'classic' {
+    contain fluentbit::config
 
-  $inputs.each |$name, $conf| {
-    create_resources(fluentbit::pipeline, { $name => { 'pipeline' => 'input' } + $conf })
+    Class['fluentbit::repo']
+    -> Class['fluentbit::install']
+    -> Class['fluentbit::config']
+    ~> Class['fluentbit::service']
+
+    $inputs.each |$name, $conf| {
+      create_resources(fluentbit::pipeline, { $name => { 'pipeline' => 'input' } + $conf })
+    }
+
+    $outputs.each |$name, $conf| {
+      create_resources(fluentbit::pipeline, { $name => { 'pipeline' => 'output' } + $conf })
+    }
+
+    $filters.each |$name, $conf| {
+      create_resources(fluentbit::pipeline, { $name => { 'pipeline' => 'filter' } + $conf })
+    }
+
+    create_resources(fluentbit::upstream, $upstreams)
+  } else {
+    contain fluentbit::config_yaml
+
+    Class['fluentbit::repo']
+    -> Class['fluentbit::install']
+    -> Class['fluentbit::config_yaml']
+    ~> Class['fluentbit::service']
   }
-
-  $outputs.each |$name, $conf| {
-    create_resources(fluentbit::pipeline, { $name => { 'pipeline' => 'output' } + $conf })
-  }
-
-  $filters.each |$name, $conf| {
-    create_resources(fluentbit::pipeline, { $name => { 'pipeline' => 'filter' } + $conf })
-  }
-
-  create_resources(fluentbit::upstream, $upstreams)
 }

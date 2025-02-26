@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [UNRELEASED] 2.0.0
+
+- [**BC**] `fluentbit::config_file` is no longer an absolute path to config file. Now used as a file name, extension is used according to `fluentbit::format` (`.yaml` or `.conf`).
+
 ## [2024-08-27] Release 1.2.0
 
 **Features**

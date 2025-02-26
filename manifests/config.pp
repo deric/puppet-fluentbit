@@ -185,4 +185,40 @@ class fluentbit::config (
   file { $fluentbit::streams_file:
     content => epp('fluentbit/streams.conf.epp', { streams => $fluentbit::streams }),
   }
+
+  ## YAML
+
+  if $fluentbit::manage_config_dir {
+    $includes = [
+      'pipelines/*.yaml',
+    ]
+  } else {
+    $includes = []
+  }
+
+  file { "${fluentbit::config_file}.yaml":
+    mode    => $fluentbit::config_file_mode,
+    content => stdlib::to_yaml(
+      {
+        service  => {
+          'flush'                    => $flush,
+          'grace'                    => $grace,
+          'daemon'                   => $daemon,
+          'dns.mode'                 => $dns_mode,
+          'log_level'                => $log_level,
+          'parsers_file'             => $parsers_file,
+          'plugins_file'             => $plugins_file,
+          'streams_file'             => $streams_file,
+          'http_server'              => $http_server,
+          'http_listen'              => $http_listen,
+          'http_port'                => $http_port,
+          'coro_stack_size'          => $coro_stack_size,
+          'scheduler.cap'            => $scheduler_cap,
+          'scheduler.base'           => $scheduler_base,
+          'json.convert_nan_to_null' => $json_convert_nan_to_null,
+        } + $storage_config + $health_config,
+        includes => [],
+      }
+    ),
+  }
 }

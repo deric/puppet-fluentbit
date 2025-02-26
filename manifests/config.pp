@@ -178,8 +178,12 @@ class fluentbit::config (
 
     $parsers_content = stdlib::to_yaml(
       {
-        parsers           => $fluentbit::parsers,
-        multiline_parsers => $fluentbit::multiline_parsers,
+        parsers           => $fluentbit::parsers.map |$k, $v| {
+          { name => $k } + $v
+        },
+        multiline_parsers => $fluentbit::multiline_parsers.map |$k, $v| {
+          { name => $k } + $v
+        },
       },
       { line_width => -1 }
     )

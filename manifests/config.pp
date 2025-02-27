@@ -187,7 +187,7 @@ class fluentbit::config (
     )
 
     $plugins_content = stdlib::to_yaml({ plugins => $fluentbit::plugins })
-    $streams_content = stdlib::to_yaml({ plugins => $fluentbit::streams })
+    $streams_content = stdlib::to_yaml({ streams => $fluentbit::streams })
   } else {
     fail('Welp, something fucked up')
   }

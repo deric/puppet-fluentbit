@@ -30,9 +30,11 @@ define fluentbit::upstream (
         upstream_servers => [
           {
             name  => $upstream_name,
-            nodes => $nodes.map |$k, $v| { { name => $k } + $v },
-          }
-        ]
+            nodes => $nodes.map |$k, $v| {
+              { name => $k } + $v
+            },
+          },
+        ],
       }
     )
   } else {

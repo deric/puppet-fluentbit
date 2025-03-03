@@ -96,8 +96,8 @@ define fluentbit::pipeline (
               + $properties
               + $script_settings
               + $upstream_settings,
-            ]
-          }
+            ],
+          },
         }
       ),
     }

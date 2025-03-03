@@ -276,9 +276,9 @@ describe 'fluentbit' do
     it {
       is_expected.to contain_fluentbit__pipeline('syslog')
         .with({
-          'plugin': 'tail',
-          'pipeline': 'input',
-        })
+                'plugin': 'tail',
+                'pipeline': 'input',
+              })
     }
   end
 

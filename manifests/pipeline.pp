@@ -49,7 +49,7 @@ define fluentbit::pipeline (
     $upstream_settings = {}
   }
 
-  if $pipeline == 'filter' and $plugin == 'lua' and $properties['code'] {
+  if $pipeline == 'filter' and $plugin == 'lua' and $properties['code'] and $fluentbit::format == 'classic' {
     # Catch 'code' property for lua scripts and write it to disk
     file { "${fluentbit::scripts_path}/${title}.lua":
       ensure  => file,

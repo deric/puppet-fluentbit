@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [UNRELEASED] 2.0.0
+
+**Changes**
+ - [**BC**] `fluentbit::config_file`, `fluentbit::plugins_file`, `fluentbit::streams_file`
+    and `fluentbit::parsers` file are no longer absolute paths, but are now used
+    as file name, relative to `fluentbit::config_dir` and without extension.
+ - [**BC**] `fluentbit::plugins_dir` is renamed to `fluentbit::pipelines_dir`
+
+**Features**
+ - Support for `yaml` config. Config format can be chosen with `fluentbit::format`.
+    File extensions will be based on the chosen formant (`.conf` for `classic` and
+    `.yaml` for `yaml`)
+ - Add `fluentbit::includes` to include custom config files. (Only supported when
+    `fluentbit::format = 'yaml'`.
+
+**Fixes**
+ - Actually honor the `fluentbit::manage_plugins_file`, `fluentbit::manage_streams_file`
+    and `fluentbit::manage_parsers_file` parameters.
+
 ## [2024-08-27] Release 1.2.0
 
 **Features**

@@ -216,7 +216,16 @@ describe 'fluentbit' do
 
     it {
       is_expected.to contain_file('/etc/fluent-bit/parsers.yaml')
-        .with_content(%r{---\nparsers:\n-\sname:\s+json\n\s\sformat:\sjson\n\s\stime_key:\stime})
+        .with_content(<<~YAML # rubocop:disable Style/TrailingCommaInArguments
+                      ---
+                      parsers:
+                      - name: json
+                        format: json
+                        time_key: time
+                        time_format: "%d/%b/%Y:%H:%M:%S %z"
+                      multiline_parsers: []
+                      YAML
+                     )
     }
   end
 
@@ -267,10 +276,16 @@ describe 'fluentbit' do
 
     it {
       is_expected.to contain_file('/etc/fluent-bit/pipelines/input-syslog.yaml')
-        .with_content(%r{---\npipeline:\n\s\sinputs:})
-        .with_content(%r{\s\s-\sname:\stail})
-        .with_content(%r{\s{4}alias:\ssyslog})
-        .with_content(%r{\s{4}path:\s"/var/log/syslog"})
+        .with_content(<<~YAML # rubocop:disable Style/TrailingCommaInArguments
+                      ---
+                      pipeline:
+                        inputs:
+                        - name: tail
+                          alias: syslog
+                          db: "/opt/fluent-bit/db/syslog"
+                          path: "/var/log/syslog"
+                      YAML
+                     )
     }
 
     it {

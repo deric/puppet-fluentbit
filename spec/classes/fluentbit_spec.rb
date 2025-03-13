@@ -32,6 +32,30 @@ describe 'fluentbit' do
         ensure: 'file',
       )
     }
+
+    it {
+      is_expected.to contain_file('/etc/fluent-bit/lua-scripts').with(
+        ensure: 'directory',
+      )
+    }
+
+    it {
+      is_expected.to contain_file('/etc/fluent-bit/pipelines').with(
+        ensure: 'directory',
+      )
+    }
+
+    it {
+      is_expected.to contain_file('/opt/fluent-bit/db').with(
+        ensure: 'directory',
+      )
+    }
+
+    it {
+      is_expected.to contain_file('/opt/fluent-bit/storage').with(
+        ensure: 'directory',
+      )
+    }
   end
 
   context 'using yaml format' do

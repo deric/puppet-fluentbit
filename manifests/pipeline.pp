@@ -4,6 +4,11 @@
 #  type-plugin_names, like db configuration for input plugins, or upstream configuration
 #  for output-forward plugin
 #
+# @note If a LUA filter with a `code` property is created in `classic` config format,
+#  then the `code` contents are written to a file, and a `script` property is added to point
+#  to this file. When `yaml` config format is used, the `code` property will be included in
+#  the resulting yaml file as-is, without adding a `script` property.
+#
 # @example
 #   fluentbit::pipeline { 'input-dummy':
 #     pipeline => 'input',

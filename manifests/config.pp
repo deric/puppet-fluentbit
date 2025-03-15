@@ -2,14 +2,14 @@
 #
 # @param config_dir
 #   Absolute path to main configuration directory
-# @param plugins_path
+# @param pipelines_path
 # @param scripts_path
 #
 # @private
 #   include fluentbit::config
 class fluentbit::config (
   Stdlib::Absolutepath $config_dir = $fluentbit::config_dir,
-  Stdlib::Absolutepath $plugins_path = $fluentbit::plugins_path,
+  Stdlib::Absolutepath $pipelines_path = $fluentbit::pipelines_path,
   Stdlib::Absolutepath $scripts_path = $fluentbit::scripts_path,
 ) {
   assert_private()
@@ -26,7 +26,7 @@ class fluentbit::config (
       recurse => true,
       mode    => $fluentbit::config_folder_mode,
     }
-    -> file { $plugins_path:
+    -> file { $pipelines_path:
       ensure  => directory,
       purge   => true,
       recurse => true,
@@ -40,36 +40,57 @@ class fluentbit::config (
       require => File[$config_dir],
     }
 
-    Concat {
-      ensure         => present,
-      mode           => $fluentbit::config_file_mode,
-      require        => File[$config_dir],
-      ensure_newline => true,
+    if $fluentbit::format == 'classic' {
+      Concat {
+        ensure         => present,
+        mode           => $fluentbit::config_file_mode,
+        require        => File[$config_dir],
+        ensure_newline => true,
+      }
+
+      concat {
+        [
+          "${pipelines_path}/inputs.conf",
+          "${pipelines_path}/outputs.conf",
+          "${pipelines_path}/filters.conf",
+        ]:
+      }
+
+      concat::fragment { 'inputs-header':
+        target  => "${pipelines_path}/inputs.conf",
+        content => "# Managed by Puppet\n",
+        order   => '01',
+      }
+      concat::fragment { 'outputs-header':
+        target  => "${pipelines_path}/outputs.conf",
+        content => "# Managed by Puppet\n",
+        order   => '01',
+      }
+      concat::fragment { 'filters-header':
+        target  => "${pipelines_path}/filters.conf",
+        content => "# Managed by Puppet\n",
+        order   => '01',
+      }
     }
 
-    concat {
-      [
-        "${plugins_path}/inputs.conf",
-        "${plugins_path}/outputs.conf",
-        "${plugins_path}/filters.conf",
-      ]:
-    }
+    $yaml_includes = [
+      $fluentbit::parsers_path,
+      $fluentbit::plugins_path,
+      $fluentbit::streams_path,
+      "${fluentbit::pipelines_path}/*.yaml",
+    ] + $fluentbit::includes
+  } else {
+    $yaml_includes = [
+      $fluentbit::parsers_path,
+      $fluentbit::plugins_path,
+      $fluentbit::streams_path,
+    ] + $fluenbit::includes
+  }
 
-    concat::fragment { 'inputs-header':
-      target  => "${plugins_path}/inputs.conf",
-      content => "# Managed by Puppet\n",
-      order   => '01',
-    }
-    concat::fragment { 'outputs-header':
-      target  => "${plugins_path}/outputs.conf",
-      content => "# Managed by Puppet\n",
-      order   => '01',
-    }
-    concat::fragment { 'filters-header':
-      target  => "${plugins_path}/filters.conf",
-      content => "# Managed by Puppet\n",
-      order   => '01',
-    }
+  $classic_includes = {
+    parsers_file => $fluentbit::parsers_file,
+    plugins_file => $fluentbit::plugins_file,
+    streams_file => $fluentbit::streams_file,
   }
 
   if $fluentbit::manage_data_dir {
@@ -86,103 +107,111 @@ class fluentbit::config (
     }
   }
 
-  $flush = $fluentbit::flush
-  $grace = $fluentbit::grace
-  $daemon = bool2str($fluentbit::daemon, 'On', 'Off')
-  $dns_mode = $fluentbit::dns_mode
-  $log_level = $fluentbit::log_level
-  $parsers_file = $fluentbit::parsers_file
-  $plugins_file = $fluentbit::plugins_file
-  $streams_file = $fluentbit::streams_file
-  $http_server = bool2str($fluentbit::http_server, 'On', 'Off')
-  $http_listen = $fluentbit::http_listen
-  $http_port = $fluentbit::http_port
-  $coro_stack_size = $fluentbit::coro_stack_size
-  $storage_path = $fluentbit::storage_path
-  $storage_sync = $fluentbit::storage_sync
-  $storage_checksum = bool2str($fluentbit::storage_checksum, 'On', 'Off')
-  $storage_backlog_mem_limit = $fluentbit::storage_backlog_mem_limit
-  $storage_max_chunks_up = $fluentbit::storage_max_chunks_up
-  $storage_metrics = bool2str($fluentbit::storage_metrics, 'On', 'Off')
-  $storage_delete_irrecoverable_chunks = bool2str($fluentbit::storage_delete_irrecoverable_chunks, 'On', 'Off')
-  $health_check = bool2str($fluentbit::health_check, 'On', 'Off')
-  $hc_errors_count = $fluentbit::hc_errors_count
-  $hc_retry_failure_count = $fluentbit::hc_retry_failure_count
-  $hc_period = $fluentbit::hc_period
-  $scheduler_cap = $fluentbit::scheduler_cap
-  $scheduler_base = $fluentbit::scheduler_base
-  $json_convert_nan_to_null = $fluentbit::json_convert_nan_to_null
   $variables = $fluentbit::variables.filter |$k, $v| {
     length($v) > 0
   }
 
-  $storage_config = $storage_path ? {
+  $storage_config = $fluentbit::storage_path ? {
     undef            => {},
     default          => {
-      'storage.path'                        => $storage_path,
-      'storage.sync'                        => $storage_sync,
-      'storage.checksum'                    => $storage_checksum,
-      'storage.max_chunks_up'               => $storage_max_chunks_up,
-      'storage.backlog.mem_limit'           => $storage_backlog_mem_limit,
-      'storage.metrics'                     => $storage_metrics,
-      'storage.delete_irrecoverable_chunks' => $storage_delete_irrecoverable_chunks,
+      'storage.path'                        => $fluentbit::storage_path,
+      'storage.sync'                        => $fluentbit::storage_sync,
+      'storage.checksum'                    => bool2str($fluentbit::storage_checksum, 'On', 'Off'),
+      'storage.max_chunks_up'               => $fluentbit::storage_max_chunks_up,
+      'storage.backlog.mem_limit'           => $fluentbit::storage_backlog_mem_limit,
+      'storage.metrics'                     => bool2str($fluentbit::storage_metrics, 'On', 'Off'),
+      'storage.delete_irrecoverable_chunks' => bool2str($fluentbit::storage_delete_irrecoverable_chunks, 'On', 'Off'),
     },
   }
-  $health_config = $health_check ? {
+  $health_config = $fluentbit::health_check ? {
     undef           => {},
     default         => {
-      'health.check'                        => $health_check,
-      'hc.errors_count'                     => $hc_errors_count,
-      'hc.retry_failure_count'              => $hc_retry_failure_count,
-      'hc.period'                           => $hc_period,
+      'health.check'                        => bool2str($fluentbit::health_check, 'On', 'Off'),
+      'hc.errors_count'                     => $fluentbit::hc_errors_count,
+      'hc.retry_failure_count'              => $fluentbit::hc_retry_failure_count,
+      'hc.period'                           => $fluentbit::hc_period,
     },
   }
 
-  file { $fluentbit::config_file:
-    mode    => $fluentbit::config_file_mode,
-    content => epp('fluentbit/fluentbit.conf.epp',
+  $service_config = {
+    'flush'                    => $fluentbit::flush,
+    'grace'                    => $fluentbit::grace,
+    'daemon'                   => bool2str($fluentbit::daemon, 'On', 'Off'),
+    'dns.mode'                 => $fluentbit::dns_mode,
+    'log_level'                => $fluentbit::log_level,
+    'http_server'              => bool2str($fluentbit::http_server, 'On', 'Off'),
+    'http_listen'              => $fluentbit::http_listen,
+    'http_port'                => $fluentbit::http_port,
+    'coro_stack_size'          => $fluentbit::coro_stack_size,
+    'scheduler.cap'            => $fluentbit::scheduler_cap,
+    'scheduler.base'           => $fluentbit::scheduler_base,
+    'json.convert_nan_to_null' => $fluentbit::json_convert_nan_to_null,
+  } + $storage_config + $health_config
+
+  if $fluentbit::format == 'classic' {
+    $config_content = epp('fluentbit/fluentbit.conf.epp',
       {
         manage_config_dir => $fluentbit::manage_config_dir,
         variables         => $variables,
-        service           => {
-          'flush'                    => $flush,
-          'grace'                    => $grace,
-          'daemon'                   => $daemon,
-          'dns.mode'                 => $dns_mode,
-          'log_level'                => $log_level,
-          'parsers_file'             => $parsers_file,
-          'plugins_file'             => $plugins_file,
-          'streams_file'             => $streams_file,
-          'http_server'              => $http_server,
-          'http_listen'              => $http_listen,
-          'http_port'                => $http_port,
-          'coro_stack_size'          => $coro_stack_size,
-          'scheduler.cap'            => $scheduler_cap,
-          'scheduler.base'           => $scheduler_base,
-          'json.convert_nan_to_null' => $json_convert_nan_to_null,
-        } + $storage_config
-        + $health_config,
+        service           => $service_config + $classic_includes
       },
-    ),
-  }
+    )
 
-  $parsers = $fluentbit::parsers
-  $multiline_parsers = $fluentbit::multiline_parsers
-
-  file { $fluentbit::parsers_file:
-    content => epp('fluentbit/parsers.conf.epp',
+    $parsers_content = epp('fluentbit/parsers.conf.epp',
       {
-        parsers           => $parsers,
-        multiline_parsers => $multiline_parsers,
+        parsers           => $fluentbit::parsers,
+        multiline_parsers => $fluentbit::multiline_parsers,
       }
-    ),
+    )
+
+    $plugins_content = epp('fluentbit/plugins.conf.epp', { plugins => $fluentbit::plugins })
+    $streams_content = epp('fluentbit/streams.conf.epp', { streams => $fluentbit::streams })
+  } elsif $fluentbit::format == 'yaml' {
+    $config_content = stdlib::to_yaml(
+      {
+        env      => $variables,
+        service  => $service_config,
+        includes => $yaml_includes,
+      },
+    )
+
+    $parsers_content = stdlib::to_yaml(
+      {
+        parsers           => $fluentbit::parsers.map |$k, $v| {
+          { name => $k } + $v
+        },
+        multiline_parsers => $fluentbit::multiline_parsers.map |$k, $v| {
+          { name => $k } + $v
+        },
+      },
+    )
+
+    $plugins_content = stdlib::to_yaml({ plugins => $fluentbit::plugins })
+    $streams_content = stdlib::to_yaml({ streams => $fluentbit::streams })
+  } else {
+    fail('Welp, something fucked up')
   }
 
-  file { $fluentbit::plugins_file:
-    content => epp('fluentbit/plugins.conf.epp', { plugins => $fluentbit::plugins }),
+  file { $fluentbit::config_path:
+    mode    => $fluentbit::config_file_mode,
+    content => $config_content,
   }
 
-  file { $fluentbit::streams_file:
-    content => epp('fluentbit/streams.conf.epp', { streams => $fluentbit::streams }),
+  if $fluentbit::manage_parsers_file {
+    file { $fluentbit::parsers_path:
+      content => $parsers_content,
+    }
+  }
+
+  if $fluentbit::manage_plugins_file {
+    file { $fluentbit::plugins_path:
+      content => $plugins_content,
+    }
+  }
+
+  if $fluentbit::manage_streams_file {
+    file { $fluentbit::streams_path:
+      content => $streams_content,
+    }
   }
 }

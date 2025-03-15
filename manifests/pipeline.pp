@@ -4,6 +4,11 @@
 #  type-plugin_names, like db configuration for input plugins, or upstream configuration
 #  for output-forward plugin
 #
+# @note If a LUA filter with a `code` property is created in `classic` config format,
+#  then the `code` contents are written to a file, and a `script` property is added to point
+#  to this file. When `yaml` config format is used, the `code` property will be included in
+#  the resulting yaml file as-is, without adding a `script` property.
+#
 # @example
 #   fluentbit::pipeline { 'input-dummy':
 #     pipeline => 'input',
@@ -42,14 +47,14 @@ define fluentbit::pipeline (
     $upstream_settings = $properties['upstream'] ? {
       undef      => {},
       default    => {
-        upstream => "${fluentbit::config_dir}/upstream-${properties['upstream']}.conf",
+        upstream => "${fluentbit::config_dir}/upstream-${properties['upstream']}.${fluentbit::config_ext}",
       },
     }
   } else {
     $upstream_settings = {}
   }
 
-  if $pipeline == 'filter' and $plugin == 'lua' and $properties['code'] {
+  if $pipeline == 'filter' and $plugin == 'lua' and $properties['code'] and $fluentbit::format == 'classic' {
     # Catch 'code' property for lua scripts and write it to disk
     file { "${fluentbit::scripts_path}/${title}.lua":
       ensure  => file,
@@ -65,19 +70,43 @@ define fluentbit::pipeline (
     $script_settings = {}
   }
 
-  concat::fragment { "pipeline-${title}":
-    target  => "${fluentbit::plugins_path}/${pipeline}s.conf",
-    content => epp('fluentbit/pipeline.conf.epp',
-      {
-        name          => $plugin,
-        pipeline_type => $pipeline,
-        order         => $order,
-        properties    => $db_settings
-        + { alias => $title }
-        + $properties
-        + $script_settings
-        + $upstream_settings,
-      }
-    ),
+  if $fluentbit::format == 'classic' {
+    concat::fragment { "pipeline-${title}":
+      target  => "${fluentbit::pipelines_path}/${pipeline}s.conf",
+      content => epp('fluentbit/pipeline.conf.epp',
+        {
+          name          => $plugin,
+          pipeline_type => $pipeline,
+          order         => $order,
+          properties    => $db_settings
+          + { alias => $title }
+          + $properties
+          + $script_settings
+          + $upstream_settings,
+        }
+      ),
+    }
+  } elsif $fluentbit::format == 'yaml' {
+    $clean_name = regsubst($name, "^${pipeline}-", '')
+    file { "${fluentbit::pipelines_path}/${pipeline}-${clean_name}.yaml":
+      content => stdlib::to_yaml(
+        {
+          pipeline => {
+            "${pipeline}s" => [
+              {
+                name  => $plugin,
+                alias => $title,
+              }
+              + $db_settings
+              + $properties
+              + $script_settings
+              + $upstream_settings,
+            ],
+          },
+        }
+      ),
+    }
+  } else {
+    fail('Welp, something fucked up')
   }
 }

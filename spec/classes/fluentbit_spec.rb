@@ -32,13 +32,70 @@ describe 'fluentbit' do
         ensure: 'file',
       )
     }
+
+    it {
+      is_expected.to contain_file('/etc/fluent-bit/lua-scripts').with(
+        ensure: 'directory',
+      )
+    }
+
+    it {
+      is_expected.to contain_file('/etc/fluent-bit/pipelines').with(
+        ensure: 'directory',
+      )
+    }
+
+    it {
+      is_expected.to contain_file('/opt/fluent-bit/db').with(
+        ensure: 'directory',
+      )
+    }
+
+    it {
+      is_expected.to contain_file('/opt/fluent-bit/storage').with(
+        ensure: 'directory',
+      )
+    }
   end
 
-  context 'with custom directories' do
+  context 'using yaml format' do
     let(:params) do
       {
+        format: 'yaml',
+      }
+    end
+
+    it { is_expected.to compile.with_all_deps }
+
+    it { is_expected.not_to contain_concat('/etc/fluent-bit/pipelines/inputs.conf') }
+    it { is_expected.not_to contain_concat('/etc/fluent-bit/pipelines/outputs.conf') }
+    it { is_expected.not_to contain_concat('/etc/fluent-bit/pipelines/filters.conf') }
+
+    it {
+      is_expected.to contain_file('/etc/fluent-bit').with(
+        ensure: 'directory',
+      )
+    }
+
+    it {
+      is_expected.not_to contain_file('/etc/fluent-bit/fluent-bit.conf').with(
+        ensure: 'file',
+      )
+    }
+
+    it {
+      is_expected.to contain_file('/etc/fluent-bit/fluent-bit.yaml').with(
+        ensure: 'file',
+      )
+    }
+  end
+
+  context 'with custom directories in classic format' do
+    let(:params) do
+      {
+        format: 'classic',
         config_dir: '/etc/fluentbit',
-        config_file: '/etc/fluentbit/fluent-bit.conf',
+        config_file: 'fluent-bit',
       }
     end
 
@@ -67,11 +124,60 @@ describe 'fluentbit' do
         recurse: true,
       )
     }
+
+    it {
+      is_expected.to contain_file('/etc/fluentbit/fluent-bit.conf').with(
+        ensure: 'file',
+      )
+    }
   end
 
-  context 'override service file' do
+  context 'with custom directories in yaml format' do
     let(:params) do
       {
+        format: 'yaml',
+        config_dir: '/etc/fluentbit',
+        config_file: 'fluent-bit',
+      }
+    end
+
+    it { is_expected.to compile.with_all_deps }
+
+    it {
+      is_expected.to contain_file('/etc/fluentbit').with(
+        ensure: 'directory',
+        purge: true,
+        recurse: true,
+      )
+    }
+
+    it {
+      is_expected.to contain_file('/etc/fluentbit/pipelines').with(
+        ensure: 'directory',
+        purge: true,
+        recurse: true,
+      )
+    }
+
+    it {
+      is_expected.to contain_file('/etc/fluentbit/lua-scripts').with(
+        ensure: 'directory',
+        purge: true,
+        recurse: true,
+      )
+    }
+
+    it {
+      is_expected.to contain_file('/etc/fluentbit/fluent-bit.yaml').with(
+        ensure: 'file',
+      )
+    }
+  end
+
+  context 'override service file in classic format' do
+    let(:params) do
+      {
+        format: 'classic',
         service_override_unit_file: true,
       }
     end
@@ -83,9 +189,25 @@ describe 'fluentbit' do
     }
   end
 
-  context 'configure json parser' do
+  context 'override service file in yaml format' do
     let(:params) do
       {
+        format: 'yaml',
+        service_override_unit_file: true,
+      }
+    end
+
+    it {
+      is_expected.to contain_file('/etc/systemd/system/fluent-bit.service').with(
+        ensure: 'file',
+      ).with_content(%r{ExecStart=/opt/fluent-bit/bin/fluent-bit -c /etc/fluent-bit/fluent-bit.yaml --enable-hot-reload})
+    }
+  end
+
+  context 'configure json parser in classic format' do
+    let(:params) do
+      {
+        format: 'classic',
         parsers: {
           'json': {
             'format': 'json',
@@ -102,9 +224,39 @@ describe 'fluentbit' do
     }
   end
 
-  context 'configure inputs' do
+  context 'configure json parser in yaml format' do
     let(:params) do
       {
+        format: 'yaml',
+        parsers: {
+          'json': {
+            'format': 'json',
+            'time_key': 'time',
+            'time_format': '%d/%b/%Y:%H:%M:%S %z',
+          }
+        },
+      }
+    end
+
+    it {
+      is_expected.to contain_file('/etc/fluent-bit/parsers.yaml')
+        .with_content(<<~YAML # rubocop:disable Style/TrailingCommaInArguments
+                      ---
+                      parsers:
+                      - name: json
+                        format: json
+                        time_key: time
+                        time_format: "%d/%b/%Y:%H:%M:%S %z"
+                      multiline_parsers: []
+                      YAML
+                     )
+    }
+  end
+
+  context 'configure inputs in classic format' do
+    let(:params) do
+      {
+        format: 'classic',
         inputs: {
           'syslog': {
             'plugin': 'tail',
@@ -127,6 +279,44 @@ describe 'fluentbit' do
         .with({
                 'plugin': 'tail',
           'pipeline': 'input',
+              })
+    }
+  end
+
+  context 'configure inputs in yaml format' do
+    let(:params) do
+      {
+        format: 'yaml',
+        inputs: {
+          'syslog': {
+            'plugin': 'tail',
+            'properties': {
+              'path': '/var/log/syslog',
+            }
+          }
+        },
+      }
+    end
+
+    it {
+      is_expected.to contain_file('/etc/fluent-bit/pipelines/input-syslog.yaml')
+        .with_content(<<~YAML # rubocop:disable Style/TrailingCommaInArguments
+                      ---
+                      pipeline:
+                        inputs:
+                        - name: tail
+                          alias: syslog
+                          db: "/opt/fluent-bit/db/syslog"
+                          path: "/var/log/syslog"
+                      YAML
+                     )
+    }
+
+    it {
+      is_expected.to contain_fluentbit__pipeline('syslog')
+        .with({
+                'plugin': 'tail',
+                'pipeline': 'input',
               })
     }
   end

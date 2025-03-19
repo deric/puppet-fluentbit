@@ -153,7 +153,8 @@ class fluentbit::config (
       {
         manage_config_dir => $fluentbit::manage_config_dir,
         variables         => $variables,
-        service           => $service_config + $classic_includes
+        service           => $service_config + $classic_includes,
+        additional_conf   => $fluentbit::service,
       },
     )
 
@@ -170,7 +171,7 @@ class fluentbit::config (
     $config_content = stdlib::to_yaml(
       {
         env      => $variables,
-        service  => $service_config,
+        service  => $service_config + $fluentbit::service,
         includes => $yaml_includes,
       },
     )

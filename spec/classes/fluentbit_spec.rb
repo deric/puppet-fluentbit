@@ -371,4 +371,38 @@ describe 'fluentbit' do
         .with_content(%r{MemoryMax=2G})
     }
   end
+
+  describe 'with service config via hash' do
+    context 'with classic format' do
+      let(:params) do
+        {
+          format: 'classic',
+          service: {
+            'storage.pause_on_chunks_overlimit': 'on',
+          },
+        }
+      end
+
+      it {
+        is_expected.to contain_file('/etc/fluent-bit/fluent-bit.conf')
+          .with_content(%r{storage.pause_on_chunks_overlimit\s+on\n})
+      }
+    end
+
+    context 'with yaml format' do
+      let(:params) do
+        {
+          format: 'yaml',
+          service: {
+            'storage.pause_on_chunks_overlimit': 'on',
+          },
+        }
+      end
+
+      it {
+        is_expected.to contain_file('/etc/fluent-bit/fluent-bit.yaml')
+          .with_content(%r{storage.pause_on_chunks_overlimit: 'on'\n})
+      }
+    end
+  end
 end

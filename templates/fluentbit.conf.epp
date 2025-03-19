@@ -40,6 +40,9 @@
     HC_Rerty_Failure_Count    <%= $service['hc.retry_failure_count'] %>
     HC_Period                 <%= $service['hc.period'] %>
 <% } -%>
+<% $additional_conf.each |$key, $value| { -%>
+    <%= $key %> <%= $value %>
+<% } -%>
 
 <%- if $manage_config_dir { %>
 @INCLUDE pipelines/*.conf

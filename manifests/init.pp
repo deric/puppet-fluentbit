@@ -211,6 +211,8 @@
 # @param json_convert_nan_to_null
 #   If enabled, NaN is converted to null when fluent-bit converts msgpack to json.
 #
+# @param service
+#   Override fluent-bit service configuration
 # @param variables
 #   macro definitions to use in the configuration file
 #   the will be registered using the *@SET* command or using Env section in YAML syntax.
@@ -287,6 +289,7 @@ class fluentbit (
   Fluentbit::PipelinePlugin        $filters           = {},
   Hash[String, Hash]               $upstreams         = {},
   Hash                             $variables         = {},
+  Hash                             $service           = {},
   Fluentbit::MultilineParser       $multiline_parsers = {},
   Fluentbit::Stream                $streams           = {},
   Array[Stdlib::Absolutepath]      $plugins           = [],

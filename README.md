@@ -24,7 +24,7 @@ fluentbit::inputs:
   'tail-syslog':
     plugin: tail
     properties:
-      Path: /var/syslog
+      path: /var/syslog
 ```
 
 [outputs](https://docs.fluentbit.io/manual/pipeline/outputs):
@@ -36,6 +36,14 @@ fluentbit::outputs:
       match: nginx.metrics.*
       host: 0.0.0.0
       port: 2021
+```
+
+Service configuration:
+```yaml
+fluentbit::service:
+  log_level: debug
+  mem_buf_limit: 50MB
+  storage.pause_on_chunks_overlimit: 'on'
 ```
 
 ## Configuration

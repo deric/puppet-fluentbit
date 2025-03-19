@@ -90,6 +90,16 @@ describe 'fluentbit' do
     }
   end
 
+  context 'with package_ensure' do
+    let(:params) do
+      {
+        package_ensure: '3.2.9',
+      }
+    end
+
+    it { is_expected.to contain_package('fluent-bit').with_ensure('3.2.9') }
+  end
+
   context 'with custom directories in classic format' do
     let(:params) do
       {

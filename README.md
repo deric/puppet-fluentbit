@@ -46,6 +46,12 @@ fluentbit::service:
   storage.pause_on_chunks_overlimit: 'on'
 ```
 
+Use specific `fluent-bit` version:
+
+```yaml
+fluentbit::package_ensure: 3.2.9
+```
+
 ## Configuration
 
 

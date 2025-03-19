@@ -22,7 +22,7 @@ describe 'fluentbit::pipeline' do
     it { is_expected.to compile }
 
     it { is_expected.to contain_concat__fragment('pipeline-input').with_content(%r{Name\s+tail\n}) }
-    it { is_expected.to contain_concat__fragment('pipeline-input').with_content(%r{Path\s+/var/log/syslog\n}) }
+    it { is_expected.to contain_concat__fragment('pipeline-input').with_content(%r{path\s+/var/log/syslog\n}) }
   end
 
   context 'input plugin in yaml format' do

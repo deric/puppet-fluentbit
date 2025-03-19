@@ -4,10 +4,10 @@
 <%- if $value != undef { -%>
   <%- if $value =~ Array { -%>
     <%- $value.each |$v| { -%>
-  <%= $key.capitalize %> <%= $v %>
+  <%= $key %> <%= $v %>
     <%- } -%>
   <%- } else { -%>
-  <%= $key.capitalize %> <%= $value %>
+  <%= $key %> <%= $value %>
   <%- } -%>
 <%- } -%>
 <% } -%>

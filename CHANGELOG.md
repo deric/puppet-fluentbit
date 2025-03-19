@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
     and `fluentbit::parsers` file are no longer absolute paths, but are now used
     as file name, relative to `fluentbit::config_dir` and without extension.
  - [**BC**] `fluentbit::plugins_dir` is renamed to `fluentbit::pipelines_dir`
+ - Don't capitalize config keys
 
 **Features**
  - Support for `yaml` config. Config format can be chosen with `fluentbit::format`.

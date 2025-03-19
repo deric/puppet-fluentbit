@@ -339,8 +339,8 @@ describe 'fluentbit' do
 
     it {
       is_expected.to contain_concat__fragment('pipeline-prometheus')
-        .with_content(%r{Match\s+nginx.metrics.*\n})
-        .with_content(%r{Host\s+0.0.0.0\n})
+        .with_content(%r{match\s+nginx.metrics.*\n})
+        .with_content(%r{host\s+0.0.0.0\n})
     }
 
     it {

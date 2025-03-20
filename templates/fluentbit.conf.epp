@@ -9,9 +9,9 @@
     Grace                     <%= $service['grace'] %>
     dns.mode                  <%= $service['dns.mode'] %>
     Log_Level                 <%= $service['log_level'] %>
-    Parsers_File              <%= $service['parsers_file'] %>
-    Plugins_File              <%= $service['plugins_file'] %>
-    Streams_file              <%= $service['streams_file'] %>
+    parsers_file              <%= $service['parsers_file'] %>
+    plugins_file              <%= $service['plugins_file'] %>
+    streams_file              <%= $service['streams_file'] %>
     HTTP_Server               <%= $service['http_server'] %>
     HTTP_Listen               <%= $service['http_listen'] %>
     HTTP_Port                 <%= $service['http_port'] %>

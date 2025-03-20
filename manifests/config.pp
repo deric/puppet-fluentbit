@@ -88,9 +88,9 @@ class fluentbit::config (
   }
 
   $classic_includes = {
-    parsers_file => $fluentbit::parsers_file,
-    plugins_file => $fluentbit::plugins_file,
-    streams_file => $fluentbit::streams_file,
+    parsers_file => "${fluentbit::parsers_file}.conf",
+    plugins_file => "${fluentbit::plugins_file}.conf",
+    streams_file => "${fluentbit::streams_file}.conf",
   }
 
   if $fluentbit::manage_data_dir {

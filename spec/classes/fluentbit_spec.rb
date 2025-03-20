@@ -136,9 +136,18 @@ describe 'fluentbit' do
     }
 
     it {
-      is_expected.to contain_file('/etc/fluentbit/fluent-bit.conf').with(
-        ensure: 'file',
-      )
+      is_expected.to contain_file('/etc/fluentbit/fluent-bit.conf').with(ensure: 'file')
+                                                                   .with_content(%r{parsers_file\s+parsers.conf})
+    }
+
+    it {
+      is_expected.to contain_file('/etc/fluentbit/fluent-bit.conf').with(ensure: 'file')
+                                                                   .with_content(%r{plugins_file\s+plugins.conf})
+    }
+
+    it {
+      is_expected.to contain_file('/etc/fluentbit/fluent-bit.conf').with(ensure: 'file')
+                                                                   .with_content(%r{streams_file\s+streams.conf})
     }
   end
 

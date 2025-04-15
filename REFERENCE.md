@@ -92,6 +92,7 @@ The following parameters are available in the `fluentbit` class:
 * [`scheduler_cap`](#-fluentbit--scheduler_cap)
 * [`scheduler_base`](#-fluentbit--scheduler_base)
 * [`json_convert_nan_to_null`](#-fluentbit--json_convert_nan_to_null)
+* [`service`](#-fluentbit--service)
 * [`variables`](#-fluentbit--variables)
 * [`includes`](#-fluentbit--includes)
 * [`format`](#-fluentbit--format)
@@ -410,6 +411,14 @@ Sets the base of exponential backoff. The property is supported from v1.8.7.
 Data type: `Boolean`
 
 If enabled, NaN is converted to null when fluent-bit converts msgpack to json.
+
+##### <a name="-fluentbit--service"></a>`service`
+
+Data type: `Hash`
+
+Override fluent-bit service configuration
+
+Default value: `{}`
 
 ##### <a name="-fluentbit--variables"></a>`variables`
 

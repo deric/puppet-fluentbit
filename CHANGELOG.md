@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [UNRELEASED] 2.0.0
+## [2025-04-15] Release 2.0.0
 
 **Changes**
  - [**BC**] `fluentbit::config_file`, `fluentbit::plugins_file`, `fluentbit::streams_file`
@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
     as file name, relative to `fluentbit::config_dir` and without extension.
  - [**BC**] `fluentbit::plugins_dir` is renamed to `fluentbit::pipelines_dir`
  - Don't capitalize config keys
+ - Allow `puppet/systemd` 8.x
 
 **Features**
  - Support for `yaml` config. Config format can be chosen with `fluentbit::format`.
@@ -21,6 +22,8 @@ All notable changes to this project will be documented in this file.
 **Fixes**
  - Actually honor the `fluentbit::manage_plugins_file`, `fluentbit::manage_streams_file`
     and `fluentbit::manage_parsers_file` parameters.
+
+[Full changes](https://github.com/deric/puppet-fluentbit/compare/v1.2.0...v2.0.0)
 
 ## [2024-08-27] Release 1.2.0
 

@@ -107,6 +107,7 @@ The following parameters are available in the `fluentbit` class:
 * [`service_override_unit_file`](#-fluentbit--service_override_unit_file)
 * [`service_ensure`](#-fluentbit--service_ensure)
 * [`service_name`](#-fluentbit--service_name)
+* [`restart_on_upgrade`](#-fluentbit--restart_on_upgrade)
 * [`manage_config_dir`](#-fluentbit--manage_config_dir)
 * [`manage_data_dir`](#-fluentbit--manage_data_dir)
 * [`inputs`](#-fluentbit--inputs)
@@ -507,6 +508,12 @@ Data type: `Stdlib::Ensure::Service`
 ##### <a name="-fluentbit--service_name"></a>`service_name`
 
 Data type: `String[1]`
+
+
+
+##### <a name="-fluentbit--restart_on_upgrade"></a>`restart_on_upgrade`
+
+Data type: `Boolean`
 
 
 

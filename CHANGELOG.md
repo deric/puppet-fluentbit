@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2025-07-23] Release 2.1.0
+
+**Changes**
+
+ - Restart service when upgrading package [#11](https://github.com/deric/puppet-fluentbit/pull/11)
+ - Drop Debian 10 and Ubuntu 18.04 support
+
+[Full changes](https://github.com/deric/puppet-fluentbit/compare/v2.0.0...v2.1.0)
+
 ## [2025-04-15] Release 2.0.0
 
 **Changes**

@@ -47,6 +47,9 @@
 # @param service_override_unit_file
 #   Override service definition provided by package with a drop-in unit file.
 #
+# @param restart_on_upgrade
+#   Whether restart fluentbit service when upgrading package
+#
 # @param memory_max
 #   Limit memory usage for the systemd unit (requires `service_override_unit_file` set to `true`)
 #   Memory limit as a string with K, M, G or T suffix, e.g. `2G`
@@ -237,6 +240,7 @@ class fluentbit (
   Boolean                          $service_override_unit_file,
   Stdlib::Ensure::Service          $service_ensure,
   String[1]                        $service_name,
+  Boolean                          $restart_on_upgrade,
 
   Boolean                          $manage_config_dir,
   Boolean                          $manage_data_dir,

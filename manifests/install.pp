@@ -8,7 +8,7 @@ class fluentbit::install {
       ensure  => $fluentbit::package_ensure,
   })
 
-  if $fluentbit::manage_service {
+  if ($fluentbit::manage_service and $fluentbit::restart_on_upgrade) {
     # restart service upon upgrade
     Package[$fluentbit::package_name] ~> Service[$fluentbit::service_name]
   }

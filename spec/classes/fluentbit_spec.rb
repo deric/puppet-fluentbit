@@ -97,7 +97,7 @@ describe 'fluentbit' do
       }
     end
 
-    it { is_expected.to contain_package('fluent-bit').with_ensure('3.2.9') }
+    it { is_expected.to contain_package('fluent-bit').with_ensure('3.2.9').that_notifies('Service[fluent-bit]') }
   end
 
   context 'with custom directories in classic format' do

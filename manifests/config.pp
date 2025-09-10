@@ -134,8 +134,8 @@ class fluentbit::config (
   }
   $log_file_config = $fluentbit::log_file ? {
     undef           => {},
-    default         => { 
-      'log_file'                            => $fluentbit::log_file 
+    default         => {
+      'log_file'                            => $fluentbit::log_file,
     },
   }
 

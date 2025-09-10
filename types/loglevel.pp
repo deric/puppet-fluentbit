@@ -1,1 +1,1 @@
-type Fluentbit::Loglevel = Enum['error', 'warning', 'info', 'debug', 'trace', 'off']
+type Fluentbit::Loglevel = Enum['error', 'warn', 'info', 'debug', 'trace', 'off']

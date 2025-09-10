@@ -3,7 +3,9 @@
 ---
 fixtures:
   forge_modules:
-    apt: "puppetlabs/apt"
+    apt:
+      repo: "puppetlabs/apt"
+      ref: "9.4.0"
     concat: "puppetlabs/concat"
     stdlib: "puppetlabs/stdlib"
     systemd: "puppet/systemd"

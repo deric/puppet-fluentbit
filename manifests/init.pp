@@ -259,7 +259,6 @@ class fluentbit (
   Boolean                          $daemon,
   Enum['UDP', 'TCP']               $dns_mode,
   Fluentbit::Loglevel              $log_level,
-  Optional[Stdlib::Absolutepath]   $log_file          = undef,
   Boolean                          $manage_parsers_file,
   String                           $parsers_file,
   Boolean                          $manage_plugins_file,
@@ -301,6 +300,7 @@ class fluentbit (
   Fluentbit::Stream                $streams           = {},
   Array[Stdlib::Absolutepath]      $plugins           = [],
   Optional[String[1]]              $memory_max        = undef,
+  Optional[Stdlib::Absolutepath]   $log_file          = undef,
   Array[Stdlib::Absolutepath]      $includes          = [],
 ) {
   $pipelines_path = "${config_dir}/${pipelines_dir}"

@@ -84,6 +84,7 @@ The following parameters are available in the `fluentbit` class:
 * [`grace`](#-fluentbit--grace)
 * [`daemon`](#-fluentbit--daemon)
 * [`dns_mode`](#-fluentbit--dns_mode)
+* [`log_file`](#-fluentbit--log_file)
 * [`log_level`](#-fluentbit--log_level)
 * [`http_server`](#-fluentbit--http_server)
 * [`http_listen`](#-fluentbit--http_listen)
@@ -360,6 +361,14 @@ Boolean value to set if Fluent Bit should run as a Daemon (background) or not. A
 Data type: `Enum['UDP', 'TCP']`
 
 Sets the primary transport layer protocol used by the asynchronous DNS resolver.
+
+##### <a name="-fluentbit--log_file"></a>`log_file`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+Absolute path where Fluent Bit will write its diagnostic logs.
+When specified, logs go to this file instead of syslog. 
+The file will be created by Fluent Bit automatically.
 
 ##### <a name="-fluentbit--log_level"></a>`log_level`
 

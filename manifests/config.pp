@@ -139,6 +139,7 @@ class fluentbit::config (
     'daemon'                   => bool2str($fluentbit::daemon, 'On', 'Off'),
     'dns.mode'                 => $fluentbit::dns_mode,
     'log_level'                => $fluentbit::log_level,
+    'log_file'                 => $fluentbit::log_file,
     'http_server'              => bool2str($fluentbit::http_server, 'On', 'Off'),
     'http_listen'              => $fluentbit::http_listen,
     'http_port'                => $fluentbit::http_port,

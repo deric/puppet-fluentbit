@@ -195,7 +195,7 @@
 #   Sets the primary transport layer protocol used by the asynchronous DNS resolver.
 # @param log_level
 #   Set the logging verbosity level.
-#   Values are: error, info, debug and trace. Values are accumulative,
+#   Values are: off, error, warn, info, debug, and trace. Values are accumulative,
 #   e.g: if 'debug' is set, it will include error, info and debug.
 #   Note that trace mode is only available if Fluent Bit was built with the WITH_TRACE option enabled.
 # @param http_server
@@ -257,6 +257,7 @@ class fluentbit (
   Boolean                          $daemon,
   Enum['UDP', 'TCP']               $dns_mode,
   Fluentbit::Loglevel              $log_level,
+  Optional[Stdlib::Absolutepath]   $log_file          = undef,
   Boolean                          $manage_parsers_file,
   String                           $parsers_file,
   Boolean                          $manage_plugins_file,

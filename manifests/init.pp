@@ -193,9 +193,11 @@
 #   Boolean value to set if Fluent Bit should run as a Daemon (background) or not. Allowed values are: yes, no, on and off.
 # @param dns_mode
 #   Sets the primary transport layer protocol used by the asynchronous DNS resolver.
+# @param log_file
+#   Specify the absolute path to the log file for Fuent Bit service itself
 # @param log_level
 #   Set the logging verbosity level.
-#   Values are: error, info, debug and trace. Values are accumulative,
+#   Values are: off, error, warn, info, debug and trace. Values are accumulative,
 #   e.g: if 'debug' is set, it will include error, info and debug.
 #   Note that trace mode is only available if Fluent Bit was built with the WITH_TRACE option enabled.
 # @param http_server
@@ -298,6 +300,7 @@ class fluentbit (
   Fluentbit::Stream                $streams           = {},
   Array[Stdlib::Absolutepath]      $plugins           = [],
   Optional[String[1]]              $memory_max        = undef,
+  Optional[Stdlib::Absolutepath]   $log_file          = undef,
   Array[Stdlib::Absolutepath]      $includes          = [],
 ) {
   $pipelines_path = "${config_dir}/${pipelines_dir}"

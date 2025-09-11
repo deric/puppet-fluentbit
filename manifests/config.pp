@@ -132,6 +132,12 @@ class fluentbit::config (
       'hc.period'                           => $fluentbit::hc_period,
     },
   }
+  $log_file_config = $fluentbit::log_file ? {
+    undef           => {},
+    default         => {
+      'log_file'                            => $fluentbit::log_file,
+    },
+  }
 
   $service_config = {
     'flush'                    => $fluentbit::flush,
@@ -146,7 +152,7 @@ class fluentbit::config (
     'scheduler.cap'            => $fluentbit::scheduler_cap,
     'scheduler.base'           => $fluentbit::scheduler_base,
     'json.convert_nan_to_null' => $fluentbit::json_convert_nan_to_null,
-  } + $storage_config + $health_config
+  } + $storage_config + $health_config + $log_file_config
 
   if $fluentbit::format == 'classic' {
     $config_content = epp('fluentbit/fluentbit.conf.epp',

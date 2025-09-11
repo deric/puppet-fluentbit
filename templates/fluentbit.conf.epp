@@ -9,6 +9,9 @@
     Grace                     <%= $service['grace'] %>
     dns.mode                  <%= $service['dns.mode'] %>
     Log_Level                 <%= $service['log_level'] %>
+<% if $service['log_file'] { %>
+    Log_File                  <%= $service['log_file'] %>
+<% } -%>
     parsers_file              <%= $service['parsers_file'] %>
     plugins_file              <%= $service['plugins_file'] %>
     streams_file              <%= $service['streams_file'] %>

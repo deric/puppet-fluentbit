@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
  - Added `log_level` off and `log_file` definition support [#12](https://github.com/deric/puppet-fluentbit/pull/12)
  - Support setting limit nofiles for systemd service [#13](https://github.com/deric/puppet-fluentbit/pull/13)
  - Add Debian 13 support
+ - Allow `puppetlabs/apt` 10.x
 
 [Full changes](https://github.com/deric/puppet-fluentbit/compare/v2.1.0...v2.2.0)
 

@@ -25,6 +25,7 @@
 * [`Fluentbit::Field_type`](#Fluentbit--Field_type)
 * [`Fluentbit::Loglevel`](#Fluentbit--Loglevel)
 * [`Fluentbit::MultilineParser`](#Fluentbit--MultilineParser)
+* [`Fluentbit::NoFileLimit`](#Fluentbit--NoFileLimit): systemd nofile limit, e.g 1024:4096 or simply 2048 (same soft and hard limit)
 * [`Fluentbit::Parser`](#Fluentbit--Parser)
 * [`Fluentbit::PipelinePlugin`](#Fluentbit--PipelinePlugin)
 * [`Fluentbit::PipelineType`](#Fluentbit--PipelineType)
@@ -109,13 +110,13 @@ The following parameters are available in the `fluentbit` class:
 * [`service_ensure`](#-fluentbit--service_ensure)
 * [`service_name`](#-fluentbit--service_name)
 * [`restart_on_upgrade`](#-fluentbit--restart_on_upgrade)
-* [`limit_nofile`](#-fluentbit--limit_nofile)
 * [`manage_config_dir`](#-fluentbit--manage_config_dir)
 * [`manage_data_dir`](#-fluentbit--manage_data_dir)
 * [`inputs`](#-fluentbit--inputs)
 * [`outputs`](#-fluentbit--outputs)
 * [`filters`](#-fluentbit--filters)
 * [`memory_max`](#-fluentbit--memory_max)
+* [`limit_nofile`](#-fluentbit--limit_nofile)
 
 ##### <a name="-fluentbit--manage_storage_dir"></a>`manage_storage_dir`
 
@@ -527,14 +528,6 @@ Data type: `Boolean`
 
 
 
-##### <a name="-fluentbit--limit_nofile"></a>`limit_nofile`
-
-Data type: `Optional[Integer]`
-
-
-
-Default value: `undef`
-
 ##### <a name="-fluentbit--manage_config_dir"></a>`manage_config_dir`
 
 Data type: `Boolean`
@@ -574,6 +567,14 @@ Default value: `{}`
 ##### <a name="-fluentbit--memory_max"></a>`memory_max`
 
 Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-fluentbit--limit_nofile"></a>`limit_nofile`
+
+Data type: `Optional[Fluentbit::NoFileLimit]`
 
 
 
@@ -846,6 +847,12 @@ Hash[String, Struct[{
   Optional[flush_timeout] => Integer,
 }]]
 ```
+
+### <a name="Fluentbit--NoFileLimit"></a>`Fluentbit::NoFileLimit`
+
+systemd nofile limit, e.g 1024:4096 or simply 2048 (same soft and hard limit)
+
+Alias of `Variant[Integer[-1], Pattern['^(infinity|\d+(:(infinity|\d+))?)$']]`
 
 ### <a name="Fluentbit--Parser"></a>`Fluentbit::Parser`
 

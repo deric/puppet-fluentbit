@@ -304,7 +304,7 @@ class fluentbit (
   Array[Stdlib::Absolutepath]      $plugins           = [],
   Optional[String[1]]              $memory_max        = undef,
   Optional[Stdlib::Absolutepath]   $log_file          = undef,
-  Optional[Integer]                $limit_nofile      = undef,
+  Optional[Fluentbit::NoFileLimit] $limit_nofile      = undef,
   Array[Stdlib::Absolutepath]      $includes          = [],
 ) {
   $pipelines_path = "${config_dir}/${pipelines_dir}"

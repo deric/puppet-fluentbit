@@ -60,6 +60,10 @@ Limit maximum memory usage per systemd unit:
 fluentbit::service_override_unit_file: true
 fluentbit::memory_max: 2G
 ```
+You increase number of opened file descriptors for `fluent-bit.service`. Either by passing single value like `32768` (same soft and hard limit) or by setting both limits:
+```yaml
+limit_nofile: '8192:16384'
+```
 
 All Puppet variables are documented in [REFERENCE.md](./REFERENCE.md).
 

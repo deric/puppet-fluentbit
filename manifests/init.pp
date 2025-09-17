@@ -246,7 +246,6 @@ class fluentbit (
   Stdlib::Ensure::Service          $service_ensure,
   String[1]                        $service_name,
   Boolean                          $restart_on_upgrade,
-  Optional[Integer]                $limit_nofile = undef,
 
   Boolean                          $manage_config_dir,
   Boolean                          $manage_data_dir,
@@ -305,6 +304,7 @@ class fluentbit (
   Array[Stdlib::Absolutepath]      $plugins           = [],
   Optional[String[1]]              $memory_max        = undef,
   Optional[Stdlib::Absolutepath]   $log_file          = undef,
+  Optional[Integer]                $limit_nofile      = undef,
   Array[Stdlib::Absolutepath]      $includes          = [],
 ) {
   $pipelines_path = "${config_dir}/${pipelines_dir}"

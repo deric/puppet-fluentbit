@@ -395,7 +395,7 @@ describe 'fluentbit' do
     let(:params) do
       {
         service_override_unit_file: true,
-        limit_nofile: 65536,
+        limit_nofile: 65_536,
         manage_service: true,
       }
     end

@@ -25,6 +25,7 @@
 * [`Fluentbit::Field_type`](#Fluentbit--Field_type)
 * [`Fluentbit::Loglevel`](#Fluentbit--Loglevel)
 * [`Fluentbit::MultilineParser`](#Fluentbit--MultilineParser)
+* [`Fluentbit::NoFileLimit`](#Fluentbit--NoFileLimit): systemd nofile limit, e.g 1024:4096 or simply 2048 (same soft and hard limit)
 * [`Fluentbit::Parser`](#Fluentbit--Parser)
 * [`Fluentbit::PipelinePlugin`](#Fluentbit--PipelinePlugin)
 * [`Fluentbit::PipelineType`](#Fluentbit--PipelineType)
@@ -115,6 +116,7 @@ The following parameters are available in the `fluentbit` class:
 * [`outputs`](#-fluentbit--outputs)
 * [`filters`](#-fluentbit--filters)
 * [`memory_max`](#-fluentbit--memory_max)
+* [`limit_nofile`](#-fluentbit--limit_nofile)
 
 ##### <a name="-fluentbit--manage_storage_dir"></a>`manage_storage_dir`
 
@@ -366,16 +368,16 @@ Sets the primary transport layer protocol used by the asynchronous DNS resolver.
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
-Absolute path where Fluent Bit will write its diagnostic logs.
-When specified, logs go to this file instead of syslog. 
-The file will be created by Fluent Bit automatically.
+Specify the absolute path to the log file for Fuent Bit service itself
+
+Default value: `undef`
 
 ##### <a name="-fluentbit--log_level"></a>`log_level`
 
 Data type: `Fluentbit::Loglevel`
 
 Set the logging verbosity level.
-Values are: error, info, debug and trace. Values are accumulative,
+Values are: off, error, warn, info, debug and trace. Values are accumulative,
 e.g: if 'debug' is set, it will include error, info and debug.
 Note that trace mode is only available if Fluent Bit was built with the WITH_TRACE option enabled.
 
@@ -565,6 +567,14 @@ Default value: `{}`
 ##### <a name="-fluentbit--memory_max"></a>`memory_max`
 
 Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-fluentbit--limit_nofile"></a>`limit_nofile`
+
+Data type: `Optional[Fluentbit::NoFileLimit]`
 
 
 
@@ -816,7 +826,7 @@ Struct[{
 
 The Fluentbit::Loglevel data type.
 
-Alias of `Enum['error', 'warning', 'info', 'debug', 'trace']`
+Alias of `Enum['error', 'warn', 'info', 'debug', 'trace', 'off']`
 
 ### <a name="Fluentbit--MultilineParser"></a>`Fluentbit::MultilineParser`
 
@@ -837,6 +847,12 @@ Hash[String, Struct[{
   Optional[flush_timeout] => Integer,
 }]]
 ```
+
+### <a name="Fluentbit--NoFileLimit"></a>`Fluentbit::NoFileLimit`
+
+systemd nofile limit, e.g 1024:4096 or simply 2048 (same soft and hard limit)
+
+Alias of `Variant[Integer[-1], Pattern['^(infinity|\d+(:(infinity|\d+))?)$']]`
 
 ### <a name="Fluentbit--Parser"></a>`Fluentbit::Parser`
 

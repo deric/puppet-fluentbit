@@ -391,6 +391,48 @@ describe 'fluentbit' do
     }
   end
 
+  describe 'with systemd service num files limit' do
+    context 'with service nofile limit' do
+      let(:params) do
+        {
+          service_override_unit_file: true,
+          limit_nofile: 65_536,
+          manage_service: true,
+        }
+      end
+
+      it {
+        is_expected.to contain_service('fluent-bit')
+          .with_ensure('running')
+      }
+
+      it {
+        is_expected.to contain_systemd__unit_file('fluent-bit.service')
+          .with_content(%r{LimitNOFILE=65536})
+      }
+    end
+
+    context 'with soft and hard limit' do
+      let(:params) do
+        {
+          service_override_unit_file: true,
+          limit_nofile: '8192:16384',
+          manage_service: true,
+        }
+      end
+
+      it {
+        is_expected.to contain_service('fluent-bit')
+          .with_ensure('running')
+      }
+
+      it {
+        is_expected.to contain_systemd__unit_file('fluent-bit.service')
+          .with_content(%r{LimitNOFILE=8192:16384})
+      }
+    end
+  end
+
   describe 'with service config via hash' do
     context 'with classic format' do
       let(:params) do

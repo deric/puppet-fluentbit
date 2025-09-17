@@ -20,9 +20,10 @@ class fluentbit::service {
         notify  => Service[$fluentbit::service_name],
         content => epp('fluentbit/fluentbit.service.epp',
           {
-            'binary_file' => $fluentbit::binary_file,
-            'config_file' => $fluentbit::config_path,
-            'memory_max'  => $fluentbit::memory_max,
+            'binary_file'  => $fluentbit::binary_file,
+            'config_file'  => $fluentbit::config_path,
+            'memory_max'   => $fluentbit::memory_max,
+            'limit_nofile' => $fluentbit::limit_nofile,
           }
         ),
       }

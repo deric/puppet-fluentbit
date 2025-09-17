@@ -54,6 +54,9 @@
 #   Limit memory usage for the systemd unit (requires `service_override_unit_file` set to `true`)
 #   Memory limit as a string with K, M, G or T suffix, e.g. `2G`
 #
+# @param limit_nofile
+#   Limit max number of opened files for systemd service (requires `service_override_unit_file` set to `true`)
+#
 # @param manage_config_dir
 #   Whether to manage the configuration directory.
 #   When enabled, will remove all unmanaged files from the directory the
@@ -243,6 +246,7 @@ class fluentbit (
   Stdlib::Ensure::Service          $service_ensure,
   String[1]                        $service_name,
   Boolean                          $restart_on_upgrade,
+  Optional[Integer]                $limit_nofile = undef,
 
   Boolean                          $manage_config_dir,
   Boolean                          $manage_data_dir,

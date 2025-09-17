@@ -391,6 +391,26 @@ describe 'fluentbit' do
     }
   end
 
+  context 'with service ulimit -n' do
+    let(:params) do
+      {
+        service_override_unit_file: true,
+        limit_nofile: 65536,
+        manage_service: true,
+      }
+    end
+
+    it {
+      is_expected.to contain_service('fluent-bit')
+        .with_ensure('running')
+    }
+
+    it {
+      is_expected.to contain_systemd__unit_file('fluent-bit.service')
+        .with_content(%r{LimitNOFILE=65536})
+    }
+  end
+
   describe 'with service config via hash' do
     context 'with classic format' do
       let(:params) do

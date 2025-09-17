@@ -109,6 +109,7 @@ The following parameters are available in the `fluentbit` class:
 * [`service_ensure`](#-fluentbit--service_ensure)
 * [`service_name`](#-fluentbit--service_name)
 * [`restart_on_upgrade`](#-fluentbit--restart_on_upgrade)
+* [`limit_nofile`](#-fluentbit--limit_nofile)
 * [`manage_config_dir`](#-fluentbit--manage_config_dir)
 * [`manage_data_dir`](#-fluentbit--manage_data_dir)
 * [`inputs`](#-fluentbit--inputs)
@@ -366,16 +367,16 @@ Sets the primary transport layer protocol used by the asynchronous DNS resolver.
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
-Absolute path where Fluent Bit will write its diagnostic logs.
-When specified, logs go to this file instead of syslog. 
-The file will be created by Fluent Bit automatically.
+Specify the absolute path to the log file for Fuent Bit service itself
+
+Default value: `undef`
 
 ##### <a name="-fluentbit--log_level"></a>`log_level`
 
 Data type: `Fluentbit::Loglevel`
 
 Set the logging verbosity level.
-Values are: error, info, debug and trace. Values are accumulative,
+Values are: off, error, warn, info, debug and trace. Values are accumulative,
 e.g: if 'debug' is set, it will include error, info and debug.
 Note that trace mode is only available if Fluent Bit was built with the WITH_TRACE option enabled.
 
@@ -525,6 +526,14 @@ Data type: `String[1]`
 Data type: `Boolean`
 
 
+
+##### <a name="-fluentbit--limit_nofile"></a>`limit_nofile`
+
+Data type: `Optional[Integer]`
+
+
+
+Default value: `undef`
 
 ##### <a name="-fluentbit--manage_config_dir"></a>`manage_config_dir`
 
@@ -816,7 +825,7 @@ Struct[{
 
 The Fluentbit::Loglevel data type.
 
-Alias of `Enum['error', 'warning', 'info', 'debug', 'trace']`
+Alias of `Enum['error', 'warn', 'info', 'debug', 'trace', 'off']`
 
 ### <a name="Fluentbit--MultilineParser"></a>`Fluentbit::MultilineParser`
 

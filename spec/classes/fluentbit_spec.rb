@@ -30,7 +30,7 @@ describe 'fluentbit' do
     it {
       is_expected.to contain_file('/etc/fluent-bit/fluent-bit.conf').with(
         ensure: 'file',
-      )
+      ).that_notifies('Service[fluent-bit]')
     }
 
     it {
@@ -86,7 +86,7 @@ describe 'fluentbit' do
     it {
       is_expected.to contain_file('/etc/fluent-bit/fluent-bit.yaml').with(
         ensure: 'file',
-      )
+      ).that_notifies('Service[fluent-bit]')
     }
   end
 

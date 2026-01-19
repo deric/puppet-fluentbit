@@ -85,6 +85,7 @@ define fluentbit::pipeline (
           + $upstream_settings,
         }
       ),
+      notify  => Service[$fluentbit::service_name],
     }
   } elsif $fluentbit::format == 'yaml' {
     $clean_name = regsubst($name, "^${pipeline}-", '')
@@ -105,6 +106,7 @@ define fluentbit::pipeline (
           },
         }
       ),
+      notify  => Service[$fluentbit::service_name],
     }
   } else {
     fail('Welp, something fucked up')

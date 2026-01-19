@@ -34,6 +34,10 @@ describe 'fluentbit' do
     }
 
     it {
+      is_expected.to contain_file('/etc/fluent-bit/fluent-bit.conf').that_notifies('Service[fluent-bit]')
+    }
+
+    it {
       is_expected.to contain_file('/etc/fluent-bit/lua-scripts').with(
         ensure: 'directory',
       )
@@ -87,6 +91,10 @@ describe 'fluentbit' do
       is_expected.to contain_file('/etc/fluent-bit/fluent-bit.yaml').with(
         ensure: 'file',
       )
+    }
+
+    it {
+      is_expected.to contain_file('/etc/fluent-bit/fluent-bit.yaml').that_notifies('Service[fluent-bit]')
     }
   end
 

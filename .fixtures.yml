@@ -9,4 +9,6 @@ fixtures:
     concat: "puppetlabs/concat"
     stdlib: "puppetlabs/stdlib"
     systemd: "puppet/systemd"
-    yumrepo_core: "puppetlabs/yumrepo_core"
+    yumrepo_core:
+      repo: "puppetlabs/yumrepo_core"
+      ref: "2.1.0"

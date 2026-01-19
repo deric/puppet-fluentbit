@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 
 
+## [2026-01-19] Release 2.2.1
+
+**Changes**
+
+ - Notify service when pipeline changes #15, [#16](https://github.com/deric/puppet-fluentbit/pull/16)
+
+[Full changes](https://github.com/deric/puppet-fluentbit/compare/v2.2.0...v2.2.1)
+
 ## [2025-09-17] Release 2.2.0
 
 **Changes**

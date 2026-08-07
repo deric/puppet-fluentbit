@@ -71,8 +71,8 @@ jobs:
       fail-fast: false
       matrix:
         beaker:
-          - debian11-64a
-          - centos9-64a
+          - debian12-64a
+          - centos10-64a
     name: Acceptance / Image ${{ matrix.beaker }}
     steps:
       - uses: actions/checkout@v7

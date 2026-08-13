@@ -42,6 +42,9 @@
 <% if $parser['key_content'] { -%>
     Key_content   <%= $parser['key_content'] %>
 <% } -%>
+<% if $parser['key_group'] { -%>
+    Key_group     <%= $parser['key_group'] %>
+<% } -%>
 <% if $parser['flush_timeout'] { -%>
     Flush_timeout <%= $parser['flush_timeout'] %>
 <% } -%>

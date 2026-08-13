@@ -7,5 +7,6 @@ type Fluentbit::MultilineParser = Hash[String, Struct[{
                           }]],
   Optional[parser]        => String[1],
   Optional[key_content]   => String[1],
+  Optional[key_group]     => String[1],
   Optional[flush_timeout] => Integer,
 }]]

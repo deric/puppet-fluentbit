@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 
 
+## [2026-09-18] Release 2.3.0
+
+**Changes**
+
+ - [**BC**] Drop Puppet 7 support, require Puppet >= 8.0 [#19](https://github.com/deric/puppet-fluentbit/pull/19)
+ - Add `key_group` support for multiline parser [#20](https://github.com/deric/puppet-fluentbit/pull/20)
+ - Fix `syslog-rfc5424` parser regex and time format to match upstream definition [#17](https://github.com/deric/puppet-fluentbit/pull/17)
+ - Fix typo in `HC_Retry_Failure_Count` [#21](https://github.com/deric/puppet-fluentbit/pull/21)
+ - Allow `puppet/systemd` 10.x and `puppetlabs/yumrepo_core` 3.x [#18](https://github.com/deric/puppet-fluentbit/pull/18)
+
+[Full changes](https://github.com/deric/puppet-fluentbit/compare/v2.2.1...v2.3.0)
+
 ## [2026-01-19] Release 2.2.1
 
 **Changes**
